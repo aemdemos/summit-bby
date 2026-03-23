@@ -1,0 +1,17 @@
+{
+  "status": "success",
+  "url": "http://localhost:8888/bestbuy-ssr-page.html",
+  "path": "index",
+  "timestamp": "2026-03-19T20:13:21.508Z",
+  "title": "Best Buy",
+  "template": "homepage",
+  "blocks": [
+    "hero-promo",
+    "carousel-category",
+    "carousel-category",
+    "card-carousel-deals",
+    "columns-benefits",
+    "columns-benefits",
+    "hero-banner"
+  ]
+}

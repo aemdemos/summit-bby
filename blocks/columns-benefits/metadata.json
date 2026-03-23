@@ -1,0 +1,39 @@
+{
+  "variantName": "columns-benefits",
+  "baseBlock": "columns",
+  "version": "1.0.0",
+  "created": "2026-03-19T15:53:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.bestbuy.com/",
+    "originPage": "Best Buy Homepage",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "benefits-list",
+    "imagePattern": "icon"
+  },
+  "contentPattern": {
+    "structure": "heading + icon-text pairs + 2 CTAs + disclaimer",
+    "buttonCount": 2,
+    "imageCount": 4
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "benefits/features checklist sections",
+      "sign-in/sign-up prompts with benefits",
+      "membership benefit highlights"
+    ],
+    "notSuitableFor": [
+      "product comparison columns",
+      "image-heavy side-by-side layouts",
+      "multi-paragraph text columns"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["content/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-03-19T15:53:00.000Z"
+  }
+}

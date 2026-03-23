@@ -1,0 +1,111 @@
+{
+  "templates": [
+    {
+      "name": "homepage",
+      "urls": [
+        "https://www.bestbuy.com/",
+        "http://localhost:8888/bestbuy-ssr-page.html"
+      ],
+      "description": "Best Buy homepage with promotional banners, featured product categories, deals, and brand highlights",
+      "blocks": [
+        {
+          "name": "hero-promo",
+          "instances": [
+            "section.hero-v2-bg-gradient"
+          ]
+        },
+        {
+          "name": "carousel-category",
+          "instances": [
+            "div.deals-by-categories div.pl-flex-carousel-container",
+            "div.flex.items-stretch.flex-col.rounded-border-lv:has(> .p-200)"
+          ]
+        },
+        {
+          "name": "card-carousel-deals",
+          "instances": [
+            ".flex.flex-md-row.flex-xs-col:has(a[href*='member-deals'])"
+          ]
+        },
+        {
+          "name": "columns-benefits",
+          "instances": [
+            "div.signin-create-account-container"
+          ]
+        },
+        {
+          "name": "hero-banner",
+          "instances": [
+            "div.flex-1.relative.overflow-hidden:has(img[src*='scc-lgtv'])"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "section-1",
+          "name": "Hero Banner",
+          "selector": "section.hero-v2-bg-gradient",
+          "style": "blue-gradient",
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "section-2",
+          "name": "Shop Deals by Category",
+          "selector": "div.deals-by-categories",
+          "style": "light-grey",
+          "blocks": [
+            "carousel-category"
+          ],
+          "defaultContent": [
+            "h5.text-style-title-sm-500"
+          ]
+        },
+        {
+          "id": "section-3",
+          "name": "Product Deals",
+          "selector": ".flex.flex-md-row.flex-xs-col:has(a[href*='member-deals'])",
+          "style": null,
+          "blocks": [
+            "card-carousel-deals"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "section-4",
+          "name": "Sign In Benefits",
+          "selector": "div.signin-create-account-container",
+          "style": null,
+          "blocks": [
+            "columns-benefits"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "section-5",
+          "name": "Featured Promo",
+          "selector": "div.flex-1.relative.overflow-hidden:has(img[src*='scc-lgtv'])",
+          "style": null,
+          "blocks": [
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "section-6",
+          "name": "Trending Categories",
+          "selector": "div.flex.items-stretch.flex-col.rounded-border-lv:has(> .p-200)",
+          "style": null,
+          "blocks": [
+            "carousel-category"
+          ],
+          "defaultContent": [
+            "span.text-style-title-sm-500"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "variantName": "card-carousel-deals",
+  "baseBlock": "card-carousel",
+  "version": "1.0.0",
+  "created": "2026-03-19T15:53:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.bestbuy.com/",
+    "originPage": "Best Buy Homepage",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "product-deals",
+    "imagePattern": "icon"
+  },
+  "contentPattern": {
+    "structure": "product-thumbnail + label + link per item",
+    "buttonCount": 0,
+    "imageCount": 10
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "product deal carousels",
+      "featured product scrollable lists",
+      "member deals showcase"
+    ],
+    "notSuitableFor": [
+      "full-width image slideshows",
+      "text-heavy content carousels",
+      "video carousels"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["content/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-03-19T15:53:00.000Z"
+  }
+}
