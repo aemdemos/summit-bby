@@ -1,0 +1,39 @@
+{
+  "variantName": "carousel-category",
+  "baseBlock": "carousel",
+  "version": "1.0.0",
+  "created": "2026-03-19T15:53:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.bestbuy.com/",
+    "originPage": "Best Buy Homepage",
+    "blockPosition": "top"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "category-navigation",
+    "imagePattern": "icon"
+  },
+  "contentPattern": {
+    "structure": "circular-image + label + link per item",
+    "buttonCount": 0,
+    "imageCount": 30
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "category navigation carousels",
+      "icon-based browsing sections",
+      "circular thumbnail scrollable lists"
+    ],
+    "notSuitableFor": [
+      "full-width image slideshows",
+      "content-heavy carousels with text overlays",
+      "video carousels"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["content/index"],
+    "reuseCount": 2,
+    "lastUsed": "2026-03-19T15:53:00.000Z"
+  }
+}

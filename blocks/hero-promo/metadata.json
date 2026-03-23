@@ -1,0 +1,39 @@
+{
+  "variantName": "hero-promo",
+  "baseBlock": "hero",
+  "version": "1.0.0",
+  "created": "2026-03-19T15:53:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.bestbuy.com/",
+    "originPage": "Best Buy Homepage",
+    "blockPosition": "top"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "dark",
+    "density": "spacious",
+    "purpose": "promo-hero",
+    "imagePattern": "logo-image"
+  },
+  "contentPattern": {
+    "structure": "logo-image + heading + subheading + disclaimer + CTA",
+    "buttonCount": 1,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "promotional sale banners",
+      "seasonal campaign heroes",
+      "event announcement banners"
+    ],
+    "notSuitableFor": [
+      "product detail pages",
+      "text-only landing pages",
+      "image gallery heroes"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["content/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-03-19T15:53:00.000Z"
+  }
+}

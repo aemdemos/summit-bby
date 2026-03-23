@@ -1,0 +1,126 @@
+.card-carousel-deals .card-carousel-deals-slides-container {
+  position: relative;
+}
+
+.card-carousel-deals .card-carousel-deals-slides,
+.card-carousel-deals .carousel-slide-indicators {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.card-carousel-deals .card-carousel-deals-slides-container > ul.card-carousel-deals-slides {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(250px, 1fr);
+  gap: 16px;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  overflow: scroll clip;
+}
+
+.card-carousel-deals .card-carousel-deals-slides::-webkit-scrollbar {
+  display: none;
+}
+
+.card-carousel-deals .card-carousel-deals-slide {
+  scroll-snap-align: start;
+  box-sizing: border-box;
+  border: 1px solid var(--light-color);
+  background-color: var(--background-color);
+}
+
+.card-carousel-deals .cards-card-body {
+  margin: 16px;
+}
+
+.card-carousel-deals .cards-card-image {
+  line-height: 0;
+}
+
+.card-carousel-deals .card-carousel-deals-slide img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.card-carousel-deals .carousel-slide-indicators {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 12px;
+  padding: 12px;
+  background-color: var(--light-color);
+  line-height: 0;
+}
+
+.card-carousel-deals .carousel-slide-indicator button {
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
+  background-color: #dadada;
+  transition: background-color 0.2s;
+}
+
+.card-carousel-deals .carousel-slide-indicator button:disabled,
+.card-carousel-deals .carousel-slide-indicator button:hover,
+.card-carousel-deals .carousel-slide-indicator button:focus-visible {
+  background-color: var(--text-color);
+}
+
+.card-carousel-deals .carousel-navigation-buttons {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.card-carousel-deals .carousel-navigation-buttons button {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  border-radius: 50%;
+  padding: 0;
+  background-color: rgb(19 19 19 / 25%);
+  transition: background-color 0.2s;
+}
+
+.card-carousel-deals .carousel-navigation-buttons button:hover,
+.card-carousel-deals .carousel-navigation-buttons button:focus-visible {
+  background-color: rgb(19 19 19 / 75%);
+}
+
+.card-carousel-deals .carousel-navigation-buttons button::after {
+  display: block;
+  content: '';
+  border: 2px solid;
+  border-bottom: 0;
+  border-left: 0;
+  height: 12px;
+  width: 12px;
+  position: absolute;
+  top: 50%;
+  left: calc(50% + 2px);
+  transform: translate(-50%, -50%) rotate(-135deg);
+}
+
+.card-carousel-deals .carousel-navigation-buttons button.slide-next::after {
+  transform: translate(-50%, -50%) rotate(45deg);
+  left: calc(50% - 2px);
+}
+
+@media (width >= 600px) {
+  .card-carousel-deals .carousel-navigation-buttons {
+    left: 24px;
+    right: 24px;
+  }
+}
