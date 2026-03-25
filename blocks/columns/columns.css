@@ -33,3 +33,138 @@
     order: unset;
   }
 }
+
+/* === nav-list variant: bordered card columns with link lists ===
+   Authoring: Columns (nav-list)
+*/
+.columns.nav-list > div > div {
+  border: 1px solid #e6e6e6;
+  padding: 24px;
+}
+
+.columns.nav-list h4 {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.44px;
+  margin: 0 0 16px;
+}
+
+.columns.nav-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.columns.nav-list li {
+  border-top: 1px solid #e6e6e6;
+  padding: 16px 0;
+}
+
+.columns.nav-list li a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.columns.nav-list li a::after {
+  content: '\203A';
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+.columns.nav-list li a:hover {
+  text-decoration: underline;
+}
+
+/* reduce section padding when dark columns is the main content */
+.section:has(.columns.dark) {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+/* === dark variant: black text column, image column ===
+   HTML order: text-div first, image-div second (matches document).
+   Mobile: image on top via order. Desktop: natural order (text left, image right).
+   Authoring: Columns (dark)
+*/
+.columns.dark > div {
+  background: #000;
+}
+
+/* text column (first child) */
+.columns.dark > div > div:first-child {
+  color: #fff;
+  padding: 24px;
+  order: 1;
+}
+
+.columns.dark > div > div:first-child h2,
+.columns.dark > div > div:first-child h3,
+.columns.dark > div > div:first-child h4 {
+  color: #fff;
+}
+
+/* image column (second child) — image fills container flush */
+.columns.dark > div > div:last-child {
+  line-height: 0;
+  order: 0;
+}
+
+.columns.dark > div > div:last-child p {
+  margin: 0;
+}
+
+.columns.dark > div > div:last-child img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ghost button CTA */
+.columns.dark > div > div:first-child p:last-child a {
+  display: inline-block;
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 8px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.columns.dark > div > div:first-child p:last-child a:hover {
+  background: #fff;
+  color: #000;
+}
+
+@media (width >= 900px) {
+  .columns.dark > div {
+    gap: 0;
+    align-items: stretch;
+    min-height: 400px;
+  }
+
+  .columns.dark > div > div,
+  .columns.dark > div > div:first-child,
+  .columns.dark > div > div:last-child {
+    flex: 1 1 50%;
+    box-sizing: border-box;
+    min-width: 0;
+    order: unset;
+  }
+
+  .columns.dark > div > div:first-child {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}

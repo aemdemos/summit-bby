@@ -1,0 +1,6 @@
+/* banner design tokens */
+:root {
+  --banner-padding: 32px 24px;
+  --banner-padding-desktop: 32px;
+  --banner-min-height: 236px;
+}
