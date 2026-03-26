@@ -32,12 +32,13 @@
 .cards.article-list > ul {
   grid-template-columns: 1fr;
   gap: 0;
+  padding: 0 16px;
 }
 
 .cards.article-list > ul > li {
   border: none;
   border-bottom: 1px solid var(--cards-card-border-color);
-  padding: 12px 16px;
+  padding: 12px 0;
 }
 
 .cards.article-list > ul > li:last-child {
@@ -46,7 +47,7 @@
 
 .cards.article-list .cards-card-body p:first-child {
   font-size: var(--body-font-size-xs);
-  color: var(--text-color-muted);
+  color: var(--text-color-secondary);
   margin-top: 0;
   margin-bottom: 4px;
 }
@@ -61,7 +62,7 @@
   background-color: transparent;
   color: var(--text-color);
   font-weight: 700;
-  font-size: var(--body-font-size-s);
+  font-size: var(--heading-font-size-xs);
   line-height: 1.4;
   padding: 0;
   margin: 0;
@@ -83,9 +84,11 @@
 */
 .cards.article-list > ul > li:has(h4) {
   border-bottom: none;
-  padding: 24px;
-  background: var(--light-color);
   margin-top: 8px;
+  margin-left: -16px;
+  margin-right: -16px;
+  padding: 24px 16px;
+  background: var(--light-color);
 }
 
 /* eyebrow text — red uppercase */

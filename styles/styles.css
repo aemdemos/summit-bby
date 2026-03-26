@@ -34,7 +34,7 @@
   --heading-font-family: akkuratpro, akkurat-pro-fallback, -apple-system, 'Segoe UI', sans-serif;
 
   /* body sizes */
-  --body-font-size-m: 16px;
+  --body-font-size-m: 18px;
   --body-font-size-s: 14px;
   --body-font-size-xs: 12px;
 
@@ -87,6 +87,7 @@ body {
   font-size: var(--body-font-size-m);
   font-weight: 400;
   line-height: 1.4;
+  letter-spacing: -0.02em;
 }
 
 body.appear {
@@ -281,6 +282,12 @@ button.accent:hover,
 button.accent:focus {
   background-color: #000;
   border-color: #000;
+}
+
+/* button groups — allow adjacent buttons to sit on the same line */
+p.button-wrapper {
+  display: inline-block;
+  margin: 0 8px 0 0;
 }
 
 main img {

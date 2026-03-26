@@ -59,9 +59,15 @@
     grid-template-columns: 1fr 2fr 1fr;
   }
 
-  /* Even variant: restore equal columns when combined with reports */
+  /* Even variant: 3 equal columns (overrides reports 1fr 2fr 1fr).
+     Source uses 384px 384px 384px at 1280px — heading, card, list side-by-side. */
   main > .section.three-columns.reports.even {
     grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  /* Don't stretch card column to full row height */
+  main > .section.three-columns.reports.even > div:nth-child(2) {
+    align-self: start;
   }
 
   /* Center column card: full width, no border, 16:9 image.
@@ -213,6 +219,15 @@
   }
 }
 
+/* Reset heading top margins inside grid section layouts —
+   source shows 0 top margin on headings within three-columns and sidebar-left. */
+main > .section.three-columns h2,
+main > .section.three-columns h3,
+main > .section.sidebar-left h2,
+main > .section.sidebar-left h3 {
+  margin-top: 0;
+}
+
 /* Section header row: h2 left, "see all" link right on same line.
    Applied to sections containing a card-carousel.product block.
    The default-content-wrapper holds the h2 + p>a siblings. */
@@ -259,14 +274,38 @@ main > .section.sidebar-left > .default-content-wrapper > p:first-child {
   line-height: 1.3;
 }
 
-/* Divider-top section style — thin grey line above section */
+/* Divider-top section style — thin grey line above section, constrained to content width */
 main > .section.divider-top {
-  border-top: 2px solid var(--border-color);
+  position: relative;
   padding-top: 32px;
 }
 
-/* Divider-bottom section style — thin grey line below section */
+main > .section.divider-top::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 64px);
+  max-width: calc(var(--max-width-site) - 64px);
+  height: 2px;
+  background-color: var(--border-color);
+}
+
+/* Divider-bottom section style — thin grey line below section, constrained to content width */
 main > .section.divider-bottom {
-  border-bottom: 2px solid var(--border-color);
+  position: relative;
   padding-bottom: 32px;
+}
+
+main > .section.divider-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 64px);
+  max-width: calc(var(--max-width-site) - 64px);
+  height: 2px;
+  background-color: var(--border-color);
 }

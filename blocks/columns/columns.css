@@ -149,7 +149,6 @@
   .columns.dark > div {
     gap: 0;
     align-items: stretch;
-    min-height: 400px;
   }
 
   .columns.dark > div > div,
