@@ -128,3 +128,284 @@
     right: var(--card-carousel-nav-inset-desktop);
   }
 }
+
+/* === product variant: text-only cards, light blue bg, arrow icon, carousel ===
+   Authoring: Card Carousel (product)
+*/
+.card-carousel.product .card-carousel-slide {
+  background-color: #deecf0;
+  border: none;
+  position: relative;
+  cursor: pointer;
+}
+
+.card-carousel.product .cards-card-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 16px;
+  margin: 0;
+}
+
+.card-carousel.product .cards-card-body h4 {
+  margin: 0 0 16px;
+  font-size: 22px;
+  letter-spacing: -0.44px;
+}
+
+.card-carousel.product .cards-card-body p {
+  font-size: var(--body-font-size-s);
+  line-height: 1.4;
+  color: var(--text-color);
+  margin: 0 0 16px;
+}
+
+/* clamp description to 2 lines */
+.card-carousel.product .cards-card-body p:not(:last-child, :first-child) {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* hide "Learn More" text, show arrow icon instead */
+.card-carousel.product .cards-card-body p:last-child {
+  margin-top: auto;
+  margin-bottom: 0;
+}
+
+.card-carousel.product .cards-card-body p:last-child a {
+  font-size: 0;
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+.card-carousel.product .cards-card-body p:last-child a::after {
+  content: '\2192';
+  font-size: 20px;
+  display: inline-block;
+}
+
+/* clickable card: stretched link */
+.card-carousel.product .cards-card-body p:last-child a::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* hover: underline title */
+.card-carousel.product .card-carousel-slide:hover h4 {
+  text-decoration: underline;
+}
+
+/* product: gap between section header and carousel */
+.card-carousel.product {
+  margin-top: 16px;
+}
+
+/* product: reorder nav below slides via flex column */
+.card-carousel.product .card-carousel-slides-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-carousel.product .card-carousel-slides-container > ul {
+  order: 0;
+}
+
+/* product nav: below cards (not overlaid), square buttons, left-aligned */
+.card-carousel.product .carousel-navigation-buttons {
+  position: static;
+  transform: none;
+  order: 1;
+  justify-content: flex-start;
+  gap: 8px;
+  padding-top: 16px;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.card-carousel.product .carousel-navigation-buttons button {
+  width: 32px;
+  height: 32px;
+  border-radius: 0;
+  background-color: #f0f0f0;
+}
+
+.card-carousel.product .carousel-navigation-buttons button:hover,
+.card-carousel.product .carousel-navigation-buttons button:focus-visible {
+  background-color: #dadada;
+}
+
+.card-carousel.product .carousel-navigation-buttons button::after {
+  height: 8px;
+  width: 8px;
+  border-width: 2px;
+  border-color: #000;
+}
+
+/* hide dot indicators for product variant */
+.card-carousel.product nav[aria-label] {
+  display: none;
+}
+
+@media (width >= 900px) {
+  .card-carousel.product .card-carousel-slides-container > ul.card-carousel-slides {
+    grid-auto-columns: calc(25% - 40px);
+    gap: 32px;
+  }
+
+  .card-carousel.product .card-carousel-slide {
+    min-height: 248px;
+  }
+}
+
+/* === podcast variant: image cards with dark content body ===
+   Authoring: Card Carousel (podcast)
+*/
+.card-carousel.podcast .card-carousel-slide {
+  border: none;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  background-color: #000;
+}
+
+.card-carousel.podcast .card-carousel-slide img {
+  aspect-ratio: 16 / 9;
+  display: block;
+}
+
+/* Image wrapper: no padding, image fills edge-to-edge */
+.card-carousel.podcast .cards-card-body:first-child {
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+}
+
+.card-carousel.podcast .cards-card-body:first-child p {
+  margin: 0;
+}
+
+/* Text content area */
+.card-carousel.podcast .cards-card-body:last-child {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  color: #fff;
+  padding: 16px;
+  margin: 0;
+}
+
+/* Date (first paragraph in body) */
+.card-carousel.podcast .cards-card-body p:first-child {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #fff;
+  margin: 0 0 8px;
+}
+
+/* Title */
+.card-carousel.podcast .cards-card-body h4 {
+  color: #fff;
+  margin: 0 0 16px;
+  font-size: 22px;
+  letter-spacing: -0.44px;
+}
+
+/* Description — clamp to 3 lines */
+.card-carousel.podcast .cards-card-body p:not(:first-child, :last-child) {
+  font-size: var(--body-font-size-s);
+  line-height: 1.4;
+  color: #fff;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0 0 16px;
+}
+
+/* Arrow link — hide text, show arrow */
+.card-carousel.podcast .cards-card-body p:last-child {
+  margin-top: auto;
+  margin-bottom: 0;
+}
+
+.card-carousel.podcast .cards-card-body p:last-child a {
+  font-size: 0;
+  text-decoration: none;
+  color: #fff;
+}
+
+.card-carousel.podcast .cards-card-body p:last-child a::after {
+  content: '\2192';
+  font-size: 16px;
+  display: inline-block;
+  color: #fff;
+}
+
+/* Stretched link — entire card clickable */
+.card-carousel.podcast .cards-card-body p:last-child a::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Hover: underline title */
+.card-carousel.podcast .card-carousel-slide:hover h4 {
+  text-decoration: underline;
+}
+
+/* Nav: below cards, square buttons, left-aligned */
+.card-carousel.podcast .card-carousel-slides-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-carousel.podcast .card-carousel-slides-container > ul {
+  order: 0;
+}
+
+.card-carousel.podcast .carousel-navigation-buttons {
+  position: static;
+  transform: none;
+  order: 1;
+  justify-content: flex-start;
+  gap: 8px;
+  padding-top: 16px;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.card-carousel.podcast .carousel-navigation-buttons button {
+  width: 32px;
+  height: 32px;
+  border-radius: 0;
+  background-color: #f0f0f0;
+}
+
+.card-carousel.podcast .carousel-navigation-buttons button:hover,
+.card-carousel.podcast .carousel-navigation-buttons button:focus-visible {
+  background-color: #dadada;
+}
+
+.card-carousel.podcast .carousel-navigation-buttons button::after {
+  height: 8px;
+  width: 8px;
+  border-width: 2px;
+  border-color: #000;
+}
+
+/* Hide dot indicators */
+.card-carousel.podcast nav[aria-label] {
+  display: none;
+}
+
+@media (width >= 900px) {
+  .card-carousel.podcast .card-carousel-slides-container > ul.card-carousel-slides {
+    grid-auto-columns: calc(50% - 48px);
+    gap: 32px;
+  }
+}

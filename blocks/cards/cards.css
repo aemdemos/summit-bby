@@ -27,3 +27,429 @@
   aspect-ratio: var(--cards-image-aspect-ratio);
   object-fit: var(--cards-image-object-fit);
 }
+
+/* === article-list variant: compact text-only list with dividers === */
+.cards.article-list > ul {
+  grid-template-columns: 1fr;
+  gap: 0;
+  padding: 0;
+}
+
+.cards.article-list > ul > li {
+  border: none;
+  padding: 16px 16px 0;
+}
+
+/* Reset body margin; divider on body so it aligns flush with text */
+.cards.article-list .cards-card-body {
+  margin: 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--cards-card-border-color);
+}
+
+.cards.article-list > ul > li:last-child .cards-card-body {
+  border-bottom: none;
+}
+
+.cards.article-list .cards-card-body p:first-child {
+  font-size: var(--body-font-size-xs);
+  color: var(--text-color-secondary);
+  margin-top: 0;
+  margin-bottom: 4px;
+}
+
+.cards.article-list .cards-card-body p:last-child {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.cards.article-list .cards-card-body a.button {
+  display: inline;
+  background-color: transparent;
+  color: var(--text-color);
+  font-weight: 700;
+  font-size: var(--heading-font-size-xs);
+  line-height: 1.4;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  white-space: normal;
+  text-align: left;
+}
+
+.cards.article-list .cards-card-body a.button:hover {
+  background-color: transparent;
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+/* === article-list newsletter card: grey card with subscribe CTA ===
+   Detected by presence of h4 within article-list item.
+   Renders as a light grey card with red eyebrow and red CTA button.
+*/
+.cards.article-list > ul > li:has(h4) {
+  border-bottom: none;
+  margin-top: 8px;
+  padding: 24px 16px;
+  background: var(--light-color);
+}
+
+.cards.article-list > ul > li:has(h4) .cards-card-body {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* eyebrow text — red uppercase */
+.cards.article-list > ul > li:has(h4) .cards-card-body > p:first-child {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--brand-red);
+  margin: 0 0 12px;
+}
+
+.cards.article-list > ul > li:has(h4) .cards-card-body h4 {
+  color: var(--text-color);
+  font-size: var(--heading-font-size-m);
+  margin: 0 0 12px;
+}
+
+/* description */
+.cards.article-list > ul > li:has(h4) .cards-card-body > p:nth-child(3) {
+  color: var(--text-color-secondary);
+  font-weight: 300;
+  font-size: var(--body-font-size-s);
+  line-height: 1.4;
+  margin: 0 0 16px;
+}
+
+/* CTA link styled as red button */
+.cards.article-list > ul > li:has(h4) .cards-card-body > p:last-child a {
+  display: inline-block;
+  background: var(--brand-red);
+  border: 1px solid var(--brand-red);
+  color: white;
+  padding: 8px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  width: fit-content;
+  margin: 0;
+}
+
+.cards.article-list > ul > li:has(h4) .cards-card-body > p:last-child a:hover {
+  background: var(--brand-red-hover);
+  border-color: var(--brand-red-hover);
+}
+
+/* === image-overlay variant: full-bleed image with text overlaid ===
+   Structure: image fills container, text at top, arrow at bottom-left.
+   Author places image + heading + description + CTA link.
+   Authoring:  Cards (image-overlay)
+*/
+.cards.image-overlay > ul {
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.cards.image-overlay > ul > li {
+  position: relative;
+  border: none;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.cards.image-overlay > ul > li img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* dark overlay — uniform 40% black wash over image */
+.cards.image-overlay > ul > li::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 40%);
+  z-index: 1;
+}
+
+/* image container — may be .cards-card-image or first .cards-card-body */
+.cards.image-overlay > ul > li > div:first-child {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  line-height: 0;
+  margin: 0;
+}
+
+/* text container — flex column, text at top, arrow pushed to bottom */
+.cards.image-overlay > ul > li > div:last-child {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 460px;
+  padding: 16px;
+  margin: 0;
+  color: white;
+}
+
+/* eyebrow — uppercase micro label (e.g. "NEWSLETTER — S&P GLOBAL") */
+.cards.image-overlay > ul > li > div:last-child > p:first-child {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: white;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.cards.image-overlay > ul > li > div:last-child h3 {
+  color: white;
+  font-size: var(--heading-font-size-l);
+  margin-top: 8px;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+
+.cards.image-overlay > ul > li > div:last-child p {
+  color: white;
+  font-size: var(--body-font-size-m);
+  font-weight: 300;
+  margin-top: 0;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+/* description truncation — clamp to 4 lines with ellipsis */
+.cards.image-overlay > ul > li > div:last-child > p:not(:first-child, :last-child) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+
+/* CTA paragraph — push to bottom-left via margin-top:auto */
+.cards.image-overlay > ul > li > div:last-child p:last-child {
+  margin-top: auto;
+  margin-bottom: 0;
+}
+
+.cards.image-overlay > ul > li > div:last-child p:last-child a.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  margin: 0;
+  font-size: 0;
+  color: transparent;
+  overflow: hidden;
+}
+
+.cards.image-overlay > ul > li > div:last-child p:last-child a.button::after {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 20px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M12 5l7 7-7 7'/%3E%3C/svg%3E") no-repeat center;
+  background-size: 20px 20px;
+}
+
+.cards.image-overlay > ul > li > div:last-child p:last-child a.button:hover {
+  background: transparent;
+}
+
+.cards.image-overlay > ul > li > div:last-child p:last-child a.button:hover::after {
+  opacity: 0.7;
+}
+
+/* hover: underline heading when hovering anywhere on card */
+.cards.image-overlay > ul > li:hover h3 {
+  text-decoration: underline;
+}
+
+/* === story-stack variant: vertically stacked editorial cards ===
+   First card: large image on top, then text (eyebrow, subtitle, h2, description, CTA)
+   Subsequent cards: text-left / image-right side-by-side, separated by dividers
+   Authoring:  Cards (story-stack)
+*/
+.cards.story-stack > ul {
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.cards.story-stack > ul > li {
+  position: relative;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* sub-cards: divider line above each one (not the first two) */
+.cards.story-stack > ul > li:not(:first-child) {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.cards.story-stack > ul > li:nth-child(n+3) {
+  border-top: 1px solid var(--border-color);
+}
+
+/* trailing divider after the last card */
+.cards.story-stack > ul > li:last-child {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 20px;
+}
+
+/* first card: full-width image, then text */
+.cards.story-stack > ul > li:first-child > div:first-child {
+  margin: 0;
+  line-height: 0;
+}
+
+.cards.story-stack > ul > li:first-child > div:first-child p {
+  margin: 0;
+}
+
+.cards.story-stack > ul > li:first-child > div:last-child {
+  margin: 0;
+}
+
+.cards.story-stack > ul > li:first-child img {
+  aspect-ratio: 16 / 9;
+}
+
+/* eyebrow: first paragraph in text div — red uppercase */
+.cards.story-stack > ul > li > div:last-child > p:first-child {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--brand-red);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 12px;
+  margin-bottom: 0;
+  line-height: 1.3;
+}
+
+/* sub-label: second paragraph (e.g. "Featured Article") */
+.cards.story-stack > ul > li > div:last-child > p:nth-child(2) {
+  font-size: var(--body-font-size-xs);
+  font-weight: 300;
+  color: var(--text-color-secondary);
+  margin-top: 2px;
+  margin-bottom: 8px;
+}
+
+/* description text */
+.cards.story-stack > ul > li > div:last-child > p:nth-last-child(2) {
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+/* CTA link — hidden; entire card is clickable via stretched link */
+.cards.story-stack > ul > li > div:last-child > p:last-child {
+  margin: 0;
+  padding: 0;
+  font-size: 0;
+  line-height: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.cards.story-stack > ul > li > div:last-child > p:last-child a {
+  font-size: 0;
+  color: transparent;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+.cards.story-stack > ul > li > div:last-child > p:last-child a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* hover: underline heading */
+.cards.story-stack > ul > li:hover h2,
+.cards.story-stack > ul > li:hover h4 {
+  text-decoration: underline;
+}
+
+/* sub-cards (not first): side-by-side layout with image right
+   Note: image div is first-child, text div is last-child.
+   Image div may be .cards-card-image or .cards-card-body depending
+   on whether <picture> was present at card-creation time. */
+@media (width >= 600px) {
+  .cards.story-stack > ul > li:not(:first-child) {
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    gap: 16px;
+    align-items: start;
+  }
+
+  .cards.story-stack > ul > li:not(:first-child) > div:first-child {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+    line-height: 0;
+  }
+
+  .cards.story-stack > ul > li:not(:first-child) > div:last-child {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+  }
+
+  .cards.story-stack > ul > li:not(:first-child) img {
+    aspect-ratio: 1 / 1;
+    width: 120px;
+    height: auto;
+    object-fit: cover;
+  }
+}
+
+/* === product variant: text-only product descriptions === */
+.cards.product > ul > li {
+  border: none;
+}
+
+.cards.product .cards-card-body h4 {
+  margin-top: 0;
+}
+
+.cards.product .cards-card-body p {
+  font-size: var(--body-font-size-s);
+  color: var(--text-color-secondary);
+}
+
+/* === Featured section: first card in center column spans full width === */
+@media (width >= 900px) {
+  .section.three-columns.featured > div:nth-child(1) .cards > ul > li:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .section.three-columns.featured > div:nth-child(1) .cards > ul > li:first-child img {
+    aspect-ratio: 16 / 9;
+  }
+}

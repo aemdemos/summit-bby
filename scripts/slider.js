@@ -144,7 +144,6 @@ export function showSlide(block, slideIndex = 0, behavior = 'smooth', options = 
 function bindEvents(block, options = {}) {
   const opts = getSliderOpts(options);
   const targetSlideAttr = opts.get('targetSlideAttr');
-  const activeSlideAttr = opts.get('activeSlideAttr');
 
   const slideIndicators = block.querySelector(opts.get('indicatorsContainer'));
   if (slideIndicators) {
@@ -164,10 +163,13 @@ function bindEvents(block, options = {}) {
     prevBtn.addEventListener('click', () => {
       const container = block.querySelector(opts.get('slidesContainer'));
       const slides = block.querySelectorAll(opts.get('slideSelector'));
-      const current = container && slides.length
-        ? getCurrentSlideIndexFromScroll(container, slides)
-        : parseInt(getDatasetAttr(block, activeSlideAttr), 10) || 0;
-      showSlide(block, current - 1, 'smooth', options);
+      if (!container || !slides.length) return;
+      if (container.scrollLeft <= 1) {
+        showSlide(block, slides.length - 1, 'smooth', options);
+      } else {
+        const current = getCurrentSlideIndexFromScroll(container, slides);
+        showSlide(block, current - 1, 'smooth', options);
+      }
     });
   }
 
@@ -176,10 +178,14 @@ function bindEvents(block, options = {}) {
     nextBtn.addEventListener('click', () => {
       const container = block.querySelector(opts.get('slidesContainer'));
       const slides = block.querySelectorAll(opts.get('slideSelector'));
-      const current = container && slides.length
-        ? getCurrentSlideIndexFromScroll(container, slides)
-        : parseInt(getDatasetAttr(block, activeSlideAttr), 10) || 0;
-      showSlide(block, current + 1, 'smooth', options);
+      if (!container || !slides.length) return;
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      if (maxScroll > 0 && container.scrollLeft >= maxScroll - 1) {
+        showSlide(block, 0, 'smooth', options);
+      } else {
+        const current = getCurrentSlideIndexFromScroll(container, slides);
+        showSlide(block, current + 1, 'smooth', options);
+      }
     });
   }
 

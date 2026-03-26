@@ -1,0 +1,126 @@
+{
+  "templates": [
+    {
+      "name": "homepage",
+      "urls": [
+        "https://www.spglobal.com/en"
+      ],
+      "description": "S&P Global corporate homepage with hero banner, featured content sections, market data, and promotional cards",
+      "blocks": [
+        {
+          "name": "embed",
+          "instances": [".ticker indices-ticker-component"]
+        },
+        {
+          "name": "cards",
+          "instances": [
+            "#homepage-left-rail .article-right-rail-component",
+            "#hero-article .horizontal-card.teaser",
+            "#featured-card-list .horizontal-card.teaser",
+            "#homepage-right-rail .vertical-card.teaser",
+            ".automaticfeedcards card-feed-component",
+            ".card_plus_list card-lists-component",
+            ".vertical-card.teaser solid-card-component"
+          ]
+        },
+        {
+          "name": "hero",
+          "instances": [
+            ".fullwidthimagesolidbanner .full-width-image-banner-component",
+            ".fullwidthsplitbanner .full-width-split-banner-component"
+          ]
+        },
+        {
+          "name": "carousel",
+          "instances": [".carousel.panelcontainer .carousel-component"]
+        },
+        {
+          "name": "columns",
+          "instances": [".navlist navigation-list-component"]
+        }
+      ],
+      "sections": [
+        {
+          "id": "section-1-ticker",
+          "name": "Market Ticker",
+          "selector": ".ticker",
+          "style": null,
+          "blocks": ["embed"],
+          "defaultContent": []
+        },
+        {
+          "id": "section-2-hero",
+          "name": "Hero Content Area",
+          "selector": "#homepage-hero-content",
+          "style": null,
+          "blocks": ["cards", "hero"],
+          "defaultContent": []
+        },
+        {
+          "id": "section-3-dow-banner",
+          "name": "Dow 50,000 Banner",
+          "selector": ".bg-grey-5 .fullwidthimagesolidbanner",
+          "style": "light-grey",
+          "blocks": ["hero"],
+          "defaultContent": []
+        },
+        {
+          "id": "section-4-daily-update",
+          "name": "S&P Global Daily Update",
+          "selector": [".onecolumnblock h2", ".automaticfeedcards"],
+          "style": null,
+          "blocks": ["cards"],
+          "defaultContent": [".onecolumnblock h2", ".onecolumnblock .cmp-text p"]
+        },
+        {
+          "id": "section-5-special-reports",
+          "name": "Special Reports",
+          "selector": "#onecolumnblock-133101204",
+          "style": null,
+          "blocks": ["cards"],
+          "defaultContent": ["#onecolumnblock-133101204", ".onecolumnblock .cmp-text"]
+        },
+        {
+          "id": "section-6-ceraweek",
+          "name": "CERAWeek Banner",
+          "selector": ".fullwidthsplitbanner",
+          "style": "light-grey",
+          "blocks": ["hero"],
+          "defaultContent": []
+        },
+        {
+          "id": "section-7-featured-products",
+          "name": "Featured Products",
+          "selector": "#onecolumnblock-1824890746",
+          "style": null,
+          "blocks": ["cards"],
+          "defaultContent": ["#onecolumnblock-1824890746"]
+        },
+        {
+          "id": "section-8-ai-insights",
+          "name": "Artificial Intelligence Insights",
+          "selector": "#onecolumnblock-287831025",
+          "style": null,
+          "blocks": ["cards"],
+          "defaultContent": ["#onecolumnblock-287831025", ".onecolumnblock .cmp-text"]
+        },
+        {
+          "id": "section-9-leaders-podcast",
+          "name": "Leaders Podcast",
+          "selector": "#onecolumnblock-1519007886",
+          "style": null,
+          "blocks": ["carousel"],
+          "defaultContent": ["#onecolumnblock-1519007886", ".onecolumnblock .cmp-text"]
+        },
+        {
+          "id": "section-10-bottom-nav",
+          "name": "Bottom Navigation Lists",
+          "selector": ".navlist",
+          "style": null,
+          "blocks": ["columns"],
+          "defaultContent": []
+        }
+      ]
+    }
+  ]
+}

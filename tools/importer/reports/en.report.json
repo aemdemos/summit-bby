@@ -1,0 +1,31 @@
+{
+  "status": "success",
+  "url": "https://www.spglobal.com/en",
+  "path": "en",
+  "timestamp": "2026-03-24T17:52:26.410Z",
+  "title": "",
+  "template": "homepage",
+  "blocks": [
+    "embed",
+    "featured-list",
+    "hero-card",
+    "horizontal-card",
+    "horizontal-card",
+    "horizontal-card",
+    "product-card",
+    "feed-cards",
+    "card-plus-list",
+    "solid-cards",
+    "solid-cards",
+    "solid-cards",
+    "solid-cards",
+    "image-banner",
+    "image-banner",
+    "split-banner",
+    "carousel",
+    "columns",
+    "columns",
+    "columns",
+    "columns"
+  ]
+}
