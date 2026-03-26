@@ -32,16 +32,22 @@
 .cards.article-list > ul {
   grid-template-columns: 1fr;
   gap: 0;
-  padding: 0 16px;
+  padding: 0;
 }
 
 .cards.article-list > ul > li {
   border: none;
-  border-bottom: 1px solid var(--cards-card-border-color);
-  padding: 12px 0;
+  padding: 16px 16px 0;
 }
 
-.cards.article-list > ul > li:last-child {
+/* Reset body margin; divider on body so it aligns flush with text */
+.cards.article-list .cards-card-body {
+  margin: 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--cards-card-border-color);
+}
+
+.cards.article-list > ul > li:last-child .cards-card-body {
   border-bottom: none;
 }
 
@@ -85,10 +91,13 @@
 .cards.article-list > ul > li:has(h4) {
   border-bottom: none;
   margin-top: 8px;
-  margin-left: -16px;
-  margin-right: -16px;
   padding: 24px 16px;
   background: var(--light-color);
+}
+
+.cards.article-list > ul > li:has(h4) .cards-card-body {
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 /* eyebrow text — red uppercase */

@@ -63,10 +63,11 @@
      Source uses 384px 384px 384px at 1280px — heading, card, list side-by-side. */
   main > .section.three-columns.reports.even {
     grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px 32px;
   }
 
-  /* Don't stretch card column to full row height */
-  main > .section.three-columns.reports.even > div:nth-child(2) {
+  /* Top-align all children so columns don't stretch to tallest sibling */
+  main > .section.three-columns.reports.even > div {
     align-self: start;
   }
 
@@ -86,6 +87,16 @@
     border: none;
     position: relative;
     cursor: pointer;
+  }
+
+  /* Flush image to top of card — contain margin collapse from inner <p> */
+  main > .section.three-columns.reports > div:nth-child(2) .cards > ul > li > div:first-child {
+    margin-top: 0;
+    overflow: hidden;
+  }
+
+  main > .section.three-columns.reports > div:nth-child(2) .cards > ul > li > div:first-child > p:first-child {
+    margin-top: 0;
   }
 
   main > .section.three-columns.reports > div:nth-child(2) .cards > ul > li img {
