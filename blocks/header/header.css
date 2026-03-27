@@ -2,18 +2,18 @@
 
 /* ===== Nav Wrapper ===== */
 header .nav-wrapper {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
   z-index: 100;
   width: 100%;
-  background-color: transparent;
+  background-color: #fff;
   font-family: var(--body-font-family);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease;
 }
 
 header .nav-wrapper.panel-open,
 header .nav-wrapper.scrolled {
-  background-color: #fff;
   box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
 }
 
@@ -544,7 +544,7 @@ header .nav-section-wrapper {
 
 /* ===== Body offset for fixed header ===== */
 body {
-  padding-top: 0;
+  padding-top: 128px;
 }
 
 /* ===== Hamburger (hidden on desktop) ===== */
@@ -559,6 +559,10 @@ header .mobile-menu {
 
 /* ===== Mobile (< 900px) ===== */
 @media (width < 900px) {
+  body {
+    padding-top: 68px;
+  }
+
   /* Hide secondary row */
   header .nav-row-secondary {
     display: none;
