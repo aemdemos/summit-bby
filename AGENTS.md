@@ -202,7 +202,7 @@ Once `migration-work/design-system-extracted.json` exists with `"status": "compl
 - User says: "validate nav structure", "fix header", "header doesn't match source" → invoke for validation/remediation.
 
 **How to invoke:**
-Read and follow the complete workflow in `.agents/skills/excat-navigation-orchestrator/SKILL.md`. Execute every phase in order — desktop first (Phases 1–3, aggregate, implement, validate), then mobile only after customer confirmation. Do not skip phases or validation gates.
+Read and follow the complete workflow in `.claude/skills/excat-navigation-orchestrator/SKILL.md`. Execute every phase in order — desktop first (Phases 1–3, aggregate, implement, validate), then mobile only after customer confirmation. Do not skip phases or validation gates.
 
 **Prerequisites:**
 - The page must already be migrated (use `excat-page-migration` first if it isn't).
@@ -212,7 +212,7 @@ Read and follow the complete workflow in `.agents/skills/excat-navigation-orches
 
 **Key rules:**
 - Desktop implementation must include full CSS styling and megamenu images — no raw bullet lists.
-- All text content, links, and labels go in `content/nav.md`, never hardcoded in `header.js`.
+- All text content, links, and labels go in `nav.md`, never hardcoded in `header.js`.
 - Every component must reach ≥ 95% visual similarity via per-component critique before reporting to the customer.
 - Mobile is implemented only after customer confirms desktop; mobile follows the same structural + style validation rigor.
 
