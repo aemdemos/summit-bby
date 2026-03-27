@@ -1,6 +1,12 @@
 /* footer design tokens */
 :root {
   --footer-max-width: var(--max-width-site);
-  --footer-padding: 40px 24px 24px;
-  --footer-padding-desktop: 40px 32px 24px;
+  --footer-bg: #e6e6e6;
+  --footer-social-bg: #000;
+  --footer-social-color: #fff;
+  --footer-heading-color: #000;
+  --footer-link-color: #454545;
+  --footer-divider-color: #adadad;
+  --footer-legal-color: #454545;
+  --footer-copyright-color: #454545;
 }

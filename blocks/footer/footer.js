@@ -2,19 +2,138 @@ import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 /**
- * loads and decorates the footer
- * @param {Element} block The footer block element
+ * Decorates the footer block.
+ * Content structure (3 sections in authored fragment):
+ *
+ *   Section 1 — Social bar:
+ *     <p><strong>Follow Us</strong> :icon: links...</p>
+ *     Section Metadata: Style = dark
+ *
+ *   Section 2 — Link columns:
+ *     <h2> + <ul> pairs
+ *
+ *   Section 3 — Legal:
+ *     <p> legal links </p>
+ *     <p> copyright </p>
  */
+
+function buildSocialBar(section) {
+  const bar = document.createElement('div');
+  bar.className = 'footer-social';
+
+  // Apply section-metadata styles (e.g. "dark") to the social bar
+  section.classList.forEach((cls) => {
+    if (cls !== 'section') bar.classList.add(cls);
+  });
+
+  const wrapper = section.querySelector('.default-content-wrapper');
+  if (!wrapper) return bar;
+
+  const socialLinks = wrapper.querySelector('p');
+  if (socialLinks) {
+    const authoredLabel = socialLinks.querySelector('strong');
+    if (authoredLabel) {
+      const label = document.createElement('span');
+      label.className = 'footer-social-label';
+      label.textContent = authoredLabel.textContent;
+      bar.append(label);
+      authoredLabel.remove();
+    }
+
+    socialLinks.className = 'footer-social-links';
+    socialLinks.querySelectorAll('a').forEach((a) => {
+      a.setAttribute('target', '_blank');
+      a.setAttribute('rel', 'noopener noreferrer');
+      if (a.title) a.setAttribute('aria-label', a.title);
+    });
+    bar.append(socialLinks);
+  }
+
+  return bar;
+}
+
+function buildLinkColumns(section) {
+  const container = document.createElement('div');
+  container.className = 'footer-links';
+  const grid = document.createElement('div');
+  grid.className = 'footer-links-grid';
+
+  const wrapper = section.querySelector('.default-content-wrapper');
+  if (!wrapper) {
+    container.append(grid);
+    return container;
+  }
+
+  const els = [...wrapper.children];
+  let i = 0;
+  while (i < els.length) {
+    const el = els[i];
+    if (el.tagName === 'H2') {
+      const col = document.createElement('div');
+      col.className = 'footer-links-column';
+      el.className = 'footer-links-heading';
+      col.append(el);
+      const next = els.at(i + 1);
+      if (next && next.tagName === 'UL') {
+        i += 1;
+        col.append(next);
+      }
+      grid.append(col);
+    }
+    i += 1;
+  }
+
+  container.append(grid);
+  return container;
+}
+
+function buildLegalSection(section) {
+  const container = document.createElement('div');
+  container.className = 'footer-legal';
+
+  const wrapper = section.querySelector('.default-content-wrapper');
+  if (!wrapper) return container;
+
+  const els = [...wrapper.children];
+  const legalLinksP = els.find((el) => el.tagName === 'P' && el.querySelector('a'));
+  const copyrightP = els.find((el) => el.tagName === 'P' && !el.querySelector('a'));
+
+  if (legalLinksP) {
+    legalLinksP.className = 'footer-legal-links';
+    [...legalLinksP.childNodes].forEach((node) => {
+      if (node.nodeType === Node.TEXT_NODE && node.textContent.trim() === '|') {
+        node.remove();
+      }
+    });
+    container.append(legalLinksP);
+  }
+
+  if (copyrightP) {
+    copyrightP.className = 'footer-copyright';
+    container.append(copyrightP);
+  }
+
+  return container;
+}
+
+/** @param {Element} block */
 export default async function decorate(block) {
-  // load footer as fragment
   const footerMeta = getMetadata('footer');
-  const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/footer';
+  const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/content/footer';
   const fragment = await loadFragment(footerPath);
 
-  // decorate footer DOM
-  block.textContent = '';
-  const footer = document.createElement('div');
-  while (fragment.firstElementChild) footer.append(fragment.firstElementChild);
+  if (!fragment) return;
 
-  block.append(footer);
+  block.textContent = '';
+
+  const sections = fragment.querySelectorAll('.section');
+  const [socialSection, linksSection, legalSection] = sections;
+
+  const divider = document.createElement('hr');
+  divider.className = 'footer-divider';
+
+  if (socialSection) block.append(buildSocialBar(socialSection));
+  if (linksSection) block.append(buildLinkColumns(linksSection));
+  block.append(divider);
+  if (legalSection) block.append(buildLegalSection(legalSection));
 }
