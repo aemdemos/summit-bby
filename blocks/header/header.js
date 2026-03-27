@@ -378,6 +378,237 @@ function buildSecondaryRow(sections) {
   return row;
 }
 
+/* ===== Mobile Menu ===== */
+
+function buildMobileChildren(parentLi) {
+  const subUl = parentLi.querySelector(':scope > ul');
+  if (!subUl) return [];
+
+  const children = [];
+  [...subUl.querySelectorAll(':scope > li')].forEach((li) => {
+    const link = li.querySelector(':scope > a');
+    const innerUl = li.querySelector(':scope > ul');
+
+    if (link && !innerUl) {
+      children.push({ label: link.textContent.trim(), href: link.href });
+    } else if (innerUl) {
+      const label = li.childNodes[0]?.textContent?.trim() || '';
+      const sub = [];
+      [...innerUl.querySelectorAll(':scope > li')].forEach((subLi) => {
+        const subLink = subLi.querySelector('a');
+        if (subLink) sub.push({ label: subLink.textContent.trim(), href: subLink.href });
+      });
+      children.push({ label, children: sub });
+    }
+  });
+
+  return children;
+}
+
+function buildMobileMenuData(sections) {
+  const items = [];
+  const navSection = sections[1];
+  if (!navSection) return items;
+
+  const allUls = [...navSection.querySelectorAll(':scope > ul')];
+
+  // Secondary nav items: Find Products, Research & Insights, Who We Are
+  const secondaryUl = allUls[1];
+  if (secondaryUl) {
+    [...secondaryUl.querySelectorAll(':scope > li')].forEach((sectionLi) => {
+      const label = sectionLi.childNodes[0]?.textContent?.trim() || '';
+      const subUl = sectionLi.querySelector(':scope > ul');
+      if (subUl) {
+        items.push({ label, children: buildMobileChildren(sectionLi) });
+      }
+    });
+  }
+
+  // Explore S&P Global
+  const primaryUl = allUls[0];
+  if (primaryUl) {
+    const exploreLi = primaryUl.querySelector(':scope > li');
+    if (exploreLi) {
+      const label = exploreLi.childNodes[0]?.textContent?.trim() || 'Explore S&P Global';
+      items.push({ label, children: buildMobileChildren(exploreLi), isExplore: true });
+    }
+  }
+
+  return items;
+}
+
+function renderMobileLevel(container, items, parentLabel, navStack, openMenu) {
+  container.textContent = '';
+
+  // Breadcrumb
+  const breadcrumb = document.createElement('div');
+  breadcrumb.className = 'mobile-menu-breadcrumb';
+
+  if (parentLabel) {
+    const backBtn = document.createElement('button');
+    backBtn.className = 'mobile-menu-back';
+    backBtn.type = 'button';
+    const chevron = document.createElement('span');
+    chevron.className = 'back-chevron';
+    backBtn.appendChild(chevron);
+    backBtn.appendChild(document.createTextNode(' Back'));
+    const labelSpan = document.createElement('span');
+    labelSpan.className = 'breadcrumb-label';
+    labelSpan.textContent = ` / ${parentLabel}`;
+    breadcrumb.appendChild(backBtn);
+    breadcrumb.appendChild(labelSpan);
+    backBtn.addEventListener('click', () => {
+      if (navStack.length > 0) {
+        const prev = navStack.pop();
+        renderMobileLevel(container, prev.items, prev.parentLabel, navStack, openMenu);
+      }
+    });
+  } else {
+    const homeLink = document.createElement('a');
+    homeLink.href = '/en';
+    const homeIcon = document.createElement('span');
+    homeIcon.className = 'icon-home';
+    homeLink.appendChild(homeIcon);
+    homeLink.appendChild(document.createTextNode(' S&P Global'));
+    breadcrumb.appendChild(homeLink);
+  }
+  container.appendChild(breadcrumb);
+
+  // Items
+  const itemsDiv = document.createElement('div');
+  itemsDiv.className = 'mobile-menu-items';
+
+  items.forEach((item) => {
+    if (item.children && item.children.length > 0) {
+      const btn = document.createElement('button');
+      btn.className = `mobile-menu-item${item.isExplore ? ' explore-item' : ''}`;
+      btn.type = 'button';
+
+      if (item.isExplore) {
+        const icon = document.createElement('span');
+        icon.className = 'icon-grid';
+        const text = document.createTextNode(` ${item.label}`);
+        btn.appendChild(icon);
+        btn.appendChild(text);
+      } else {
+        btn.appendChild(document.createTextNode(item.label));
+      }
+
+      const chevron = document.createElement('span');
+      chevron.className = 'chevron-right';
+      btn.appendChild(chevron);
+
+      btn.addEventListener('click', () => {
+        navStack.push({ items, parentLabel });
+        renderMobileLevel(container, item.children, item.label, navStack, openMenu);
+      });
+      itemsDiv.appendChild(btn);
+    } else if (item.href) {
+      const a = document.createElement('a');
+      a.className = 'mobile-menu-item';
+      a.href = item.href;
+      a.textContent = item.label;
+      itemsDiv.appendChild(a);
+    }
+  });
+
+  container.appendChild(itemsDiv);
+}
+
+function buildMobileMenu(sections) {
+  const menu = document.createElement('div');
+  menu.className = 'mobile-menu';
+
+  const content = document.createElement('div');
+  content.className = 'mobile-menu-content';
+
+  const footer = document.createElement('div');
+  footer.className = 'mobile-menu-footer';
+
+  // Support link from section 2
+  const toolsSection = sections[2];
+  if (toolsSection) {
+    const toolsUl = toolsSection.querySelector(':scope > ul');
+    if (toolsUl) {
+      const supportLi = [...toolsUl.querySelectorAll(':scope > li')].find((li) => {
+        const a = li.querySelector(':scope > a');
+        return a && !li.querySelector(':scope > ul');
+      });
+      if (supportLi) {
+        const a = supportLi.querySelector('a');
+        const supportLink = document.createElement('a');
+        supportLink.href = a.href;
+        supportLink.className = 'mobile-support-link';
+        const icon = document.createElement('span');
+        icon.className = 'icon-support';
+        supportLink.appendChild(icon);
+        supportLink.appendChild(document.createTextNode(` ${a.textContent.trim()}`));
+        footer.appendChild(supportLink);
+      }
+    }
+
+    const ctaP = toolsSection.querySelector(':scope > p');
+    if (ctaP) {
+      const ctaLink = ctaP.querySelector('a');
+      if (ctaLink) {
+        const cta = document.createElement('a');
+        cta.href = ctaLink.href;
+        cta.textContent = ctaLink.textContent.trim();
+        cta.className = 'mobile-cta';
+        footer.appendChild(cta);
+      }
+    }
+  }
+
+  menu.appendChild(content);
+  menu.appendChild(footer);
+
+  const topItems = buildMobileMenuData(sections);
+  const navStack = [];
+
+  return {
+    element: menu,
+    open() {
+      navStack.length = 0;
+      renderMobileLevel(content, topItems, null, navStack);
+      menu.classList.add('open');
+    },
+    close() {
+      menu.classList.remove('open');
+    },
+  };
+}
+
+function buildHamburger(mobileMenu) {
+  const btn = document.createElement('button');
+  btn.className = 'nav-hamburger';
+  btn.type = 'button';
+  btn.setAttribute('aria-label', 'Menu');
+  btn.setAttribute('aria-expanded', 'false');
+
+  const icon = document.createElement('span');
+  icon.className = 'nav-hamburger-icon';
+  for (let i = 0; i < 3; i += 1) {
+    icon.appendChild(document.createElement('span'));
+  }
+  btn.appendChild(icon);
+
+  btn.addEventListener('click', () => {
+    const opening = !btn.classList.contains('open');
+    btn.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(opening));
+    if (opening) {
+      mobileMenu.open();
+      document.body.style.overflow = 'hidden';
+    } else {
+      mobileMenu.close();
+      document.body.style.overflow = '';
+    }
+  });
+
+  return btn;
+}
+
 /**
  * loads and decorates the header
  * @param {Element} block The header block element
@@ -408,12 +639,28 @@ export default async function decorate(block) {
   overlay.className = 'nav-overlay';
   overlay.addEventListener('click', () => closeAllPanels(nav));
 
+  // Mobile menu
+  const mobileMenu = buildMobileMenu(sections);
+  const hamburger = buildHamburger(mobileMenu);
+  primaryRow.querySelector('.nav-row-right').appendChild(hamburger);
+
   nav.appendChild(primaryRow);
   nav.appendChild(secondaryRow);
+  nav.appendChild(mobileMenu.element);
   nav.appendChild(overlay);
 
+  function closeMobileMenu() {
+    mobileMenu.close();
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeAllPanels(nav);
+    if (e.key === 'Escape') {
+      closeAllPanels(nav);
+      closeMobileMenu();
+    }
   });
 
   document.addEventListener('click', (e) => {
@@ -422,6 +669,7 @@ export default async function decorate(block) {
 
   isDesktop.addEventListener('change', () => {
     closeAllPanels(nav);
+    closeMobileMenu();
   });
 
   const navWrapper = document.createElement('div');
