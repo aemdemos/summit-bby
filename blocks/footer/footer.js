@@ -1,4 +1,4 @@
-import { getMetadata } from '../../scripts/aem.js';
+import { getMetadata, decorateIcons } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 /**
@@ -6,7 +6,7 @@ import { loadFragment } from '../fragment/fragment.js';
  * Content structure (3 sections in authored fragment):
  *
  *   Section 1 — Social bar:
- *     <p><strong>Follow Us</strong> :icon: links...</p>
+ *     <p><strong>Follow Us</strong> <a href="...">:x-twitter:</a> <a>:facebook:</a> ...</p>
  *     Section Metadata: Style = dark
  *
  *   Section 2 — Link columns:
@@ -29,25 +29,43 @@ function buildSocialBar(section) {
   const wrapper = section.querySelector('.default-content-wrapper');
   if (!wrapper) return bar;
 
-  const socialLinks = wrapper.querySelector('p');
-  if (socialLinks) {
-    const authoredLabel = socialLinks.querySelector('strong');
-    if (authoredLabel) {
-      const label = document.createElement('span');
-      label.className = 'footer-social-label';
-      label.textContent = authoredLabel.textContent;
-      bar.append(label);
-      authoredLabel.remove();
+  // Content is a single <p>: <strong>Label</strong> <a>:icon:</a> <a>:icon:</a> ...
+  const p = wrapper.querySelector('p');
+  if (!p) return bar;
+
+  const authoredLabel = p.querySelector('strong');
+  if (authoredLabel) {
+    const label = document.createElement('span');
+    label.className = 'footer-social-label';
+    label.textContent = authoredLabel.textContent;
+    bar.append(label);
+    authoredLabel.remove();
+  }
+
+  p.className = 'footer-social-links';
+  p.querySelectorAll('a').forEach((a) => {
+    a.setAttribute('target', '_blank');
+    a.setAttribute('rel', 'noopener noreferrer');
+
+    // Handle :icon-name: text notation — convert to icon span
+    const text = a.textContent.trim();
+    const match = text.match(/^:([a-z0-9-]+):$/);
+    if (match && !a.querySelector('.icon')) {
+      a.textContent = '';
+      const icon = document.createElement('span');
+      icon.className = `icon icon-${match[1]}`;
+      a.append(icon);
     }
 
-    socialLinks.className = 'footer-social-links';
-    socialLinks.querySelectorAll('a').forEach((a) => {
-      a.setAttribute('target', '_blank');
-      a.setAttribute('rel', 'noopener noreferrer');
-      if (a.title) a.setAttribute('aria-label', a.title);
-    });
-    bar.append(socialLinks);
-  }
+    // Set aria-label from icon class
+    const iconEl = a.querySelector('.icon');
+    if (iconEl) {
+      const name = [...iconEl.classList].find((c) => c !== 'icon')?.replace('icon-', '');
+      if (name) a.setAttribute('aria-label', name);
+    }
+  });
+  bar.append(p);
+  decorateIcons(bar);
 
   return bar;
 }
