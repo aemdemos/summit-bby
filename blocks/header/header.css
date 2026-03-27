@@ -28,13 +28,14 @@ header .nav-row {
   align-items: center;
   justify-content: space-between;
   height: 64px;
-  padding: 0 24px;
+  padding: 0 32px;
 }
 
 header .nav-row-left,
 header .nav-row-right {
   display: flex;
   align-items: center;
+  align-self: stretch;
   gap: 0;
 }
 
@@ -43,13 +44,28 @@ header .nav-row-primary {
 }
 
 header .nav-row-secondary {
+  position: relative;
+  background-color: transparent;
+}
+
+header .nav-row-secondary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100%;
   background-color: #f6f6f6;
   box-shadow: 0 2px 2px 0 rgb(0 0 0 / 12%);
+  z-index: -1;
 }
 
 /* ===== Brand / Logo ===== */
 header .nav-brand {
-  margin-right: 8px;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
 }
 
 header .nav-brand a {
@@ -70,8 +86,10 @@ header .nav-brand p {
 header .nav-btn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px;
+  align-self: stretch;
+  gap: 4px;
+  padding: 0 8px;
+  margin: 0;
   border: none;
   background: none;
   font-family: var(--body-font-family);
@@ -86,7 +104,7 @@ header .nav-btn {
 }
 
 header .nav-btn:hover {
-  background-color: #f0f0f0;
+  background-color: #e8e8e8;
 }
 
 header .nav-btn.nav-trigger-active {
@@ -98,12 +116,13 @@ header .nav-btn.nav-trigger-active {
 /* ===== Explore Button ===== */
 header .nav-btn-explore {
   color: #000;
+  gap: 6px;
 }
 
 /* ===== Section Buttons (Row 2) ===== */
 header .nav-btn-section {
   color: #000;
-  padding: 12px 16px;
+  padding: 0 16px;
 }
 
 header .nav-btn-section .chevron-down {
@@ -126,6 +145,7 @@ header .nav-btn-section.nav-trigger-active .chevron-down {
 header .nav-cta-button {
   display: flex;
   align-items: center;
+  align-self: center;
   padding: 8px 16px;
   background-color: #d6002a;
   color: #fff;
@@ -133,15 +153,15 @@ header .nav-cta-button {
   font-weight: 500;
   text-decoration: none;
   border: 1px solid #d6002a;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
   white-space: nowrap;
   height: 40px;
   box-sizing: border-box;
 }
 
 header .nav-cta-button:hover {
-  background-color: #b00023;
-  border-color: #b00023;
+  background-color: #000;
+  border-color: #000;
   color: #fff;
 }
 
@@ -517,6 +537,9 @@ header .nav-search-wrapper,
 header .nav-language-wrapper,
 header .nav-section-wrapper {
   position: relative;
+  display: flex;
+  align-self: stretch;
+  align-items: stretch;
 }
 
 /* ===== Body offset for fixed header ===== */

@@ -13,3 +13,18 @@ localhost-key.pem
 .cursor
 Trace*.json
 .migration
+
+# Navigation validation artifacts (QA screenshots, reports, logs)
+blocks/header/navigation-validation/
+
+# Migration work files
+migration-work/
+
+# Playwright browser binaries
+.claude/skills/**/playwright-browsers/
+
+# Duplicate content files at root (content lives in content/)
+/nav.plain.html
+
+# Local images referenced by content (uploaded to DA separately)
+/images/

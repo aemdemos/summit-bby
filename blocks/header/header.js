@@ -207,7 +207,8 @@ function createBtnText(text) {
 function buildToolItem(toolLi, container, getNav) {
   const text = getLiText(toolLi);
   const subUl = toolLi.querySelector(':scope > ul');
-  const directLink = toolLi.querySelector(':scope > a');
+  const directLink = toolLi.querySelector(':scope > a')
+    || toolLi.querySelector(':scope > p > a');
 
   if (text.toLowerCase().includes('search') && subUl) {
     const searchBtn = document.createElement('button');
@@ -563,7 +564,7 @@ function buildMobileMenu(sections) {
     const toolsUl = toolsSection.querySelector(':scope > ul');
     if (toolsUl) {
       const supportLi = [...toolsUl.querySelectorAll(':scope > li')].find((li) => {
-        const a = li.querySelector(':scope > a');
+        const a = li.querySelector(':scope > a') || li.querySelector(':scope > p > a');
         return a && !li.querySelector(':scope > ul');
       });
       if (supportLi) {
