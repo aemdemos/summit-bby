@@ -2,6 +2,20 @@ import { getMetadata } from '../../scripts/aem.js';
 
 const isDesktop = window.matchMedia('(min-width: 900px)');
 
+/**
+ * Extract the label text from a <li> element.
+ * Handles both local dev (bare text node) and AEM pipeline (<p>-wrapped) formats.
+ */
+function getLiText(li) {
+  for (const node of li.childNodes) {
+    if (node.nodeType === 3 && node.textContent.trim()) return node.textContent.trim();
+    if (node.nodeType === 1) break;
+  }
+  const p = li.querySelector(':scope > p');
+  if (p && !p.querySelector('a, img')) return p.textContent.trim();
+  return '';
+}
+
 function closeAllPanels(nav) {
   nav.querySelectorAll('.megamenu-panel.open, .search-panel.open, .language-dropdown.open').forEach((p) => {
     p.classList.remove('open');
@@ -75,7 +89,7 @@ function buildMegamenuPanel(triggerLi) {
       tabList.appendChild(tab);
     } else {
       // Content tab: label + nested items
-      const label = tabLi.childNodes[0]?.textContent?.trim() || '';
+      const label = getLiText(tabLi);
       const tab = document.createElement('li');
       tab.className = `megamenu-tab${firstContentTab ? ' active' : ''}`;
       tab.setAttribute('data-tab', tabId);
@@ -171,7 +185,7 @@ function createBtnText(text) {
 }
 
 function buildToolItem(toolLi, container, getNav) {
-  const text = toolLi.childNodes[0]?.textContent?.trim() || '';
+  const text = getLiText(toolLi);
   const subUl = toolLi.querySelector(':scope > ul');
   const directLink = toolLi.querySelector(':scope > a');
 
@@ -197,7 +211,7 @@ function buildToolItem(toolLi, container, getNav) {
     [...subUl.querySelectorAll(':scope > li')].forEach((groupLi) => {
       const groupDiv = document.createElement('div');
       const heading = document.createElement('h4');
-      heading.textContent = groupLi.childNodes[0]?.textContent?.trim() || '';
+      heading.textContent = getLiText(groupLi);
       groupDiv.appendChild(heading);
       const innerUl = groupLi.querySelector(':scope > ul');
       if (innerUl) groupDiv.appendChild(innerUl.cloneNode(true));
@@ -256,7 +270,7 @@ function buildExploreButton(navSection, container, getNav) {
   const exploreBtn = document.createElement('button');
   exploreBtn.className = 'nav-btn nav-btn-explore';
   exploreBtn.setAttribute('type', 'button');
-  exploreBtn.append(createIconSpan('icon-grid'), createBtnText(exploreLi.childNodes[0]?.textContent?.trim() || 'Explore'));
+  exploreBtn.append(createIconSpan('icon-grid'), createBtnText(getLiText(exploreLi) || 'Explore'));
 
   const panel = buildMegamenuPanel(exploreLi);
   if (!panel) return;
@@ -330,7 +344,7 @@ function buildSecondaryRow(sections) {
     const secondaryUl = allUls[1];
     if (secondaryUl) {
       [...secondaryUl.querySelectorAll(':scope > li')].forEach((sectionLi) => {
-        const triggerText = sectionLi.childNodes[0]?.textContent?.trim() || '';
+        const triggerText = getLiText(sectionLi);
         const btn = document.createElement('button');
         btn.className = 'nav-btn nav-btn-section';
         btn.setAttribute('type', 'button');
@@ -392,7 +406,7 @@ function buildMobileChildren(parentLi) {
     if (link && !innerUl) {
       children.push({ label: link.textContent.trim(), href: link.href });
     } else if (innerUl) {
-      const label = li.childNodes[0]?.textContent?.trim() || '';
+      const label = getLiText(li);
       const sub = [];
       [...innerUl.querySelectorAll(':scope > li')].forEach((subLi) => {
         const subLink = subLi.querySelector('a');
@@ -416,7 +430,7 @@ function buildMobileMenuData(sections) {
   const secondaryUl = allUls[1];
   if (secondaryUl) {
     [...secondaryUl.querySelectorAll(':scope > li')].forEach((sectionLi) => {
-      const label = sectionLi.childNodes[0]?.textContent?.trim() || '';
+      const label = getLiText(sectionLi);
       const subUl = sectionLi.querySelector(':scope > ul');
       if (subUl) {
         items.push({ label, children: buildMobileChildren(sectionLi) });
@@ -429,7 +443,7 @@ function buildMobileMenuData(sections) {
   if (primaryUl) {
     const exploreLi = primaryUl.querySelector(':scope > li');
     if (exploreLi) {
-      const label = exploreLi.childNodes[0]?.textContent?.trim() || 'Explore S&P Global';
+      const label = getLiText(exploreLi) || 'Explore S&P Global';
       items.push({ label, children: buildMobileChildren(exploreLi), isExplore: true });
     }
   }
