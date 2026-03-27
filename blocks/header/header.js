@@ -45,17 +45,15 @@ function togglePanel(nav, trigger, panel) {
 }
 
 /**
- * Build a megamenu panel from a nav <li> that has nested content.
- * Structure: <li>Label <ul>(tabs)</ul> <p>(bottom bar)</p></li>
- * Each tab <li> is either:
- *   - link-only: <li><a href>Label</a></li>
- *   - content tab: <li>Label <ul>(items)</ul></li>
+ * Build a megamenu panel from a nav <div> section.
+ * Structure: <div><h2>Title</h2> <h3>Tab</h3><ul>items</ul> ... <p>bottom bar</p></div>
+ * Sequential parsing:
+ *   - <h3> starts a content tab; the next <ul> supplies its items
+ *   - <p> with 1 <a> = link-only sidebar tab
+ *   - <p> with 2+ <a> = bottom bar
  * Content items with <img> render as image tiles; without as text links.
  */
-function buildMegamenuPanel(triggerLi) {
-  const tabsUl = triggerLi.querySelector(':scope > ul');
-  if (!tabsUl) return null;
-
+function buildMegamenuPanel(megamenuDiv) {
   const panel = document.createElement('div');
   panel.className = 'megamenu-panel';
 
@@ -69,71 +67,89 @@ function buildMegamenuPanel(triggerLi) {
   const content = document.createElement('div');
   content.className = 'megamenu-content';
 
-  const tabItems = [...tabsUl.querySelectorAll(':scope > li')];
+  let tabIndex = 0;
   let firstContentTab = true;
+  let currentH3 = null;
+  const elems = [...megamenuDiv.children];
 
-  tabItems.forEach((tabLi, idx) => {
-    const tabId = `tab-${idx}`;
-    const link = tabLi.querySelector(':scope > a');
-    const subUl = tabLi.querySelector(':scope > ul');
+  elems.forEach((child) => {
+    const tag = child.tagName.toLowerCase();
 
-    if (link && !subUl) {
-      // Link-only tab: just a link in the sidebar
-      const tab = document.createElement('li');
-      tab.className = 'megamenu-tab nav-link';
-      tab.setAttribute('data-tab', tabId);
-      const a = document.createElement('a');
-      a.href = link.href;
-      a.textContent = link.textContent;
-      tab.appendChild(a);
-      tabList.appendChild(tab);
-    } else {
-      // Content tab: label + nested items
-      const label = getLiText(tabLi);
+    // Skip the megamenu title — caller uses it for the button label
+    if (tag === 'h2') return;
+
+    // <h3> starts a content tab; items come from the next <ul>
+    if (tag === 'h3') {
+      currentH3 = child.textContent.trim();
+      return;
+    }
+
+    // <ul> after an <h3> — build a content tab
+    if (tag === 'ul' && currentH3) {
+      const tabId = `tab-${tabIndex}`;
+      tabIndex += 1;
+
       const tab = document.createElement('li');
       tab.className = `megamenu-tab${firstContentTab ? ' active' : ''}`;
       tab.setAttribute('data-tab', tabId);
-      tab.textContent = label;
+      tab.textContent = currentH3;
       tabList.appendChild(tab);
 
-      // Build tab content
       const tabContent = document.createElement('div');
       tabContent.className = `megamenu-tab-content${firstContentTab ? ' active' : ''}`;
       tabContent.setAttribute('data-tab-content', tabId);
 
       const heading = document.createElement('h3');
-      heading.textContent = label;
+      heading.textContent = currentH3;
       tabContent.appendChild(heading);
 
-      if (subUl) {
-        const items = [...subUl.querySelectorAll(':scope > li')];
-        const hasImages = items.some((li) => li.querySelector('img'));
+      const items = [...child.querySelectorAll(':scope > li')];
+      const hasImages = items.some((li) => li.querySelector('img'));
 
-        if (hasImages) {
-          const tiles = document.createElement('div');
-          tiles.className = 'megamenu-tiles';
-          items.forEach((li) => {
-            const a = li.querySelector('a');
-            if (a) tiles.appendChild(a.cloneNode(true));
-          });
-          tabContent.appendChild(tiles);
-        } else {
-          const linkList = document.createElement('ul');
-          linkList.className = 'megamenu-links';
-          items.forEach((li) => {
-            const a = li.querySelector('a');
-            if (a) {
-              const newLi = document.createElement('li');
-              newLi.appendChild(a.cloneNode(true));
-              linkList.appendChild(newLi);
-            }
-          });
-          tabContent.appendChild(linkList);
-        }
+      if (hasImages) {
+        const tiles = document.createElement('div');
+        tiles.className = 'megamenu-tiles';
+        items.forEach((li) => {
+          const a = li.querySelector('a');
+          if (a) tiles.appendChild(a.cloneNode(true));
+        });
+        tabContent.appendChild(tiles);
+      } else {
+        const linkList = document.createElement('ul');
+        linkList.className = 'megamenu-links';
+        items.forEach((li) => {
+          const a = li.querySelector('a');
+          if (a) {
+            const newLi = document.createElement('li');
+            newLi.appendChild(a.cloneNode(true));
+            linkList.appendChild(newLi);
+          }
+        });
+        tabContent.appendChild(linkList);
       }
 
       content.appendChild(tabContent);
       firstContentTab = false;
+      currentH3 = null;
+      return;
+    }
+
+    // <p> — either a link-only tab (1 link) or bottom bar (2+ links)
+    if (tag === 'p') {
+      const links = [...child.querySelectorAll('a')];
+      if (links.length === 1) {
+        const tabId = `tab-${tabIndex}`;
+        tabIndex += 1;
+        const tab = document.createElement('li');
+        tab.className = 'megamenu-tab nav-link';
+        tab.setAttribute('data-tab', tabId);
+        const a = document.createElement('a');
+        a.href = links[0].href;
+        a.textContent = links[0].textContent;
+        tab.appendChild(a);
+        tabList.appendChild(tab);
+      }
+      // Bottom bar (2+ links) handled after the loop
     }
   });
 
@@ -157,16 +173,20 @@ function buildMegamenuPanel(triggerLi) {
   panel.appendChild(sidebar);
   panel.appendChild(content);
 
-  // Bottom bar from <p> after the <ul>
-  const bottomP = triggerLi.querySelector(':scope > p');
-  if (bottomP) {
-    const bottomBar = document.createElement('div');
-    bottomBar.className = 'megamenu-bottom-bar';
-    bottomP.querySelectorAll('a').forEach((a) => {
-      bottomBar.appendChild(a.cloneNode(true));
-    });
-    panel.appendChild(bottomBar);
-  }
+  // Bottom bar: <p> with 2+ links
+  elems.forEach((child) => {
+    if (child.tagName.toLowerCase() === 'p') {
+      const links = [...child.querySelectorAll('a')];
+      if (links.length >= 2) {
+        const bottomBar = document.createElement('div');
+        bottomBar.className = 'megamenu-bottom-bar';
+        links.forEach((a) => {
+          bottomBar.appendChild(a.cloneNode(true));
+        });
+        panel.appendChild(bottomBar);
+      }
+    }
+  });
 
   return panel;
 }
@@ -261,18 +281,16 @@ function buildToolItem(toolLi, container, getNav) {
   }
 }
 
-function buildExploreButton(navSection, container, getNav) {
-  const primaryUl = navSection.querySelector(':scope > ul');
-  if (!primaryUl) return;
-  const exploreLi = primaryUl.querySelector(':scope > li');
-  if (!exploreLi) return;
+function buildExploreButton(megamenuDiv, container, getNav) {
+  const h2 = megamenuDiv.querySelector(':scope > h2');
+  const label = h2 ? h2.textContent.trim() : 'Explore';
 
   const exploreBtn = document.createElement('button');
   exploreBtn.className = 'nav-btn nav-btn-explore';
   exploreBtn.setAttribute('type', 'button');
-  exploreBtn.append(createIconSpan('icon-grid'), createBtnText(getLiText(exploreLi) || 'Explore'));
+  exploreBtn.append(createIconSpan('icon-grid'), createBtnText(label));
 
-  const panel = buildMegamenuPanel(exploreLi);
+  const panel = buildMegamenuPanel(megamenuDiv);
   if (!panel) return;
 
   const wrapper = document.createElement('div');
@@ -308,11 +326,11 @@ function buildPrimaryRow(sections) {
     left.appendChild(brandEl);
   }
 
-  // Section 1: First <ul> is primary nav (Explore)
-  if (sections[1]) buildExploreButton(sections[1], left, getNav);
+  // Section 2: Explore megamenu
+  if (sections[2]) buildExploreButton(sections[2], left, getNav);
 
-  // Section 2: Tools (Search, Language, Support)
-  const toolsSection = sections[2];
+  // Section 1: Tools (Search, Language, Support)
+  const toolsSection = sections[1];
   if (toolsSection) {
     const toolsUl = toolsSection.querySelector(':scope > ul');
     if (toolsUl) {
@@ -337,42 +355,38 @@ function buildSecondaryRow(sections) {
   const right = document.createElement('div');
   right.className = 'nav-row-right';
 
-  // Section 1: Second <ul> is secondary nav items
-  const navSection = sections[1];
-  if (navSection) {
-    const allUls = [...navSection.querySelectorAll(':scope > ul')];
-    const secondaryUl = allUls[1];
-    if (secondaryUl) {
-      [...secondaryUl.querySelectorAll(':scope > li')].forEach((sectionLi) => {
-        const triggerText = getLiText(sectionLi);
-        const btn = document.createElement('button');
-        btn.className = 'nav-btn nav-btn-section';
-        btn.setAttribute('type', 'button');
-        const btnText = document.createElement('span');
-        btnText.className = 'btn-text';
-        btnText.textContent = triggerText;
-        const btnChevron = document.createElement('span');
-        btnChevron.className = 'chevron-down';
-        btn.append(btnText, btnChevron);
+  // Sections 3+: secondary megamenu items (Find Products, Research & Insights, …)
+  for (let i = 3; i < sections.length; i += 1) {
+    const megamenuDiv = sections[i];
+    const h2 = megamenuDiv.querySelector(':scope > h2');
+    const triggerText = h2 ? h2.textContent.trim() : '';
 
-        const panel = buildMegamenuPanel(sectionLi);
-        if (panel) {
-          const wrapper = document.createElement('div');
-          wrapper.className = 'nav-section-wrapper';
-          wrapper.appendChild(btn);
-          wrapper.appendChild(panel);
-          btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            togglePanel(row.closest('nav'), btn, panel);
-          });
-          left.appendChild(wrapper);
-        }
+    const btn = document.createElement('button');
+    btn.className = 'nav-btn nav-btn-section';
+    btn.setAttribute('type', 'button');
+    const btnText = document.createElement('span');
+    btnText.className = 'btn-text';
+    btnText.textContent = triggerText;
+    const btnChevron = document.createElement('span');
+    btnChevron.className = 'chevron-down';
+    btn.append(btnText, btnChevron);
+
+    const panel = buildMegamenuPanel(megamenuDiv);
+    if (panel) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'nav-section-wrapper';
+      wrapper.appendChild(btn);
+      wrapper.appendChild(panel);
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        togglePanel(row.closest('nav'), btn, panel);
       });
+      left.appendChild(wrapper);
     }
   }
 
-  // Section 2: CTA from <p><strong><a>
-  const toolsSection = sections[2];
+  // Section 1: CTA from tools section <p><strong><a>
+  const toolsSection = sections[1];
   if (toolsSection) {
     const ctaP = toolsSection.querySelector(':scope > p');
     if (ctaP) {
@@ -394,25 +408,39 @@ function buildSecondaryRow(sections) {
 
 /* ===== Mobile Menu ===== */
 
-function buildMobileChildren(parentLi) {
-  const subUl = parentLi.querySelector(':scope > ul');
-  if (!subUl) return [];
-
+function buildMobileChildren(megamenuDiv) {
   const children = [];
-  [...subUl.querySelectorAll(':scope > li')].forEach((li) => {
-    const link = li.querySelector(':scope > a');
-    const innerUl = li.querySelector(':scope > ul');
+  let currentH3 = null;
 
-    if (link && !innerUl) {
-      children.push({ label: link.textContent.trim(), href: link.href });
-    } else if (innerUl) {
-      const label = getLiText(li);
+  [...megamenuDiv.children].forEach((child) => {
+    const tag = child.tagName.toLowerCase();
+
+    if (tag === 'h2') return; // skip title
+
+    if (tag === 'h3') {
+      currentH3 = child.textContent.trim();
+      return;
+    }
+
+    // <ul> after <h3> — content tab with sub-items
+    if (tag === 'ul' && currentH3) {
       const sub = [];
-      [...innerUl.querySelectorAll(':scope > li')].forEach((subLi) => {
-        const subLink = subLi.querySelector('a');
-        if (subLink) sub.push({ label: subLink.textContent.trim(), href: subLink.href });
+      [...child.querySelectorAll(':scope > li')].forEach((li) => {
+        const a = li.querySelector('a');
+        if (a) sub.push({ label: a.textContent.trim(), href: a.href });
       });
-      children.push({ label, children: sub });
+      children.push({ label: currentH3, children: sub });
+      currentH3 = null;
+      return;
+    }
+
+    // <p> with 1 link — link-only tab
+    if (tag === 'p') {
+      const links = [...child.querySelectorAll('a')];
+      if (links.length === 1) {
+        children.push({ label: links[0].textContent.trim(), href: links[0].href });
+      }
+      // Skip bottom bar (2+ links) in mobile
     }
   });
 
@@ -421,31 +449,21 @@ function buildMobileChildren(parentLi) {
 
 function buildMobileMenuData(sections) {
   const items = [];
-  const navSection = sections[1];
-  if (!navSection) return items;
 
-  const allUls = [...navSection.querySelectorAll(':scope > ul')];
-
-  // Secondary nav items: Find Products, Research & Insights, Who We Are
-  const secondaryUl = allUls[1];
-  if (secondaryUl) {
-    [...secondaryUl.querySelectorAll(':scope > li')].forEach((sectionLi) => {
-      const label = getLiText(sectionLi);
-      const subUl = sectionLi.querySelector(':scope > ul');
-      if (subUl) {
-        items.push({ label, children: buildMobileChildren(sectionLi) });
-      }
-    });
+  // Secondary megamenus (sections 3+): Find Products, Research & Insights, Who We Are
+  for (let i = 3; i < sections.length; i += 1) {
+    const megamenuDiv = sections[i];
+    const h2 = megamenuDiv.querySelector(':scope > h2');
+    const label = h2 ? h2.textContent.trim() : '';
+    items.push({ label, children: buildMobileChildren(megamenuDiv) });
   }
 
-  // Explore S&P Global
-  const primaryUl = allUls[0];
-  if (primaryUl) {
-    const exploreLi = primaryUl.querySelector(':scope > li');
-    if (exploreLi) {
-      const label = getLiText(exploreLi) || 'Explore S&P Global';
-      items.push({ label, children: buildMobileChildren(exploreLi), isExplore: true });
-    }
+  // Explore S&P Global (section 2) — add last with isExplore flag
+  if (sections[2]) {
+    const megamenuDiv = sections[2];
+    const h2 = megamenuDiv.querySelector(':scope > h2');
+    const label = h2 ? h2.textContent.trim() : 'Explore S&P Global';
+    items.push({ label, children: buildMobileChildren(megamenuDiv), isExplore: true });
   }
 
   return items;
@@ -539,8 +557,8 @@ function buildMobileMenu(sections) {
   const footer = document.createElement('div');
   footer.className = 'mobile-menu-footer';
 
-  // Support link from section 2
-  const toolsSection = sections[2];
+  // Support link from section 1 (tools)
+  const toolsSection = sections[1];
   if (toolsSection) {
     const toolsUl = toolsSection.querySelector(':scope > ul');
     if (toolsUl) {
@@ -639,7 +657,7 @@ export default async function decorate(block) {
   const parser = new DOMParser();
   const navDoc = parser.parseFromString(html, 'text/html');
 
-  // Standard EDS nav: 3 top-level divs (brand, sections, tools)
+  // Nav: 6 top-level divs (brand, tools, explore, find-products, research, who-we-are)
   const sections = [...navDoc.body.querySelectorAll(':scope > div')];
 
   block.textContent = '';
