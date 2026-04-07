@@ -315,7 +315,7 @@ header .megamenu-bottom-bar {
   display: flex;
   gap: 0;
   padding: 16px 40px;
-  border-top: 1px solid #e0e0e0;
+  border-top: none;
   background: #fff;
 }
 
@@ -351,12 +351,12 @@ header .megamenu-tab {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 32px;
+  padding: 16px 24px 16px 28px;
   font-size: 16px;
   font-weight: 300;
   color: #000;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: font-weight 0.15s ease;
   border-left: 4px solid transparent;
   border-bottom: 1px solid #e6e6e6;
   line-height: 1.4;
@@ -367,13 +367,12 @@ header .megamenu-tab:last-child {
 }
 
 header .megamenu-tab:hover {
-  background-color: #f5f5f5;
+  font-weight: 700;
 }
 
 header .megamenu-tab.active {
   font-weight: 700;
   border-left-color: #c00;
-  background-color: #f5f5f5;
 }
 
 header .megamenu-tab .tab-chevron {
@@ -397,15 +396,15 @@ header .megamenu-tab.nav-link {
 
 header .megamenu-tab.nav-link a {
   display: block;
-  padding: 16px 32px;
+  padding: 16px 24px 16px 28px;
   color: #000;
   font-weight: 300;
   text-decoration: none;
+  transition: font-weight 0.15s ease;
 }
 
 header .megamenu-tab.nav-link a:hover {
-  background-color: #f5f5f5;
-  text-decoration: underline;
+  font-weight: 700;
 }
 
 /* ===== Megamenu Content ===== */
