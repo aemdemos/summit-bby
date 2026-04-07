@@ -258,7 +258,7 @@ header .nav-row-secondary .megamenu-panel {
 
 header .megamenu-panel.open {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: minmax(250px, 300px) 1fr;
   grid-template-rows: 1fr auto;
   height: 580px;
 }
@@ -311,7 +311,6 @@ header .megamenu-content {
   grid-row: 1 / 2;
   grid-column: 2 / 3;
   padding: 24px 40px;
-  max-width: 1000px;
   overflow-y: auto;
 }
 
