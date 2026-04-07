@@ -245,14 +245,16 @@ header .megamenu-panel {
 header .nav-row-primary .megamenu-panel {
   top: 64px;
   position: fixed;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   margin-left: 0;
 }
 
 header .nav-row-secondary .megamenu-panel {
   top: 128px;
   position: fixed;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   margin-left: 0;
 }
 
