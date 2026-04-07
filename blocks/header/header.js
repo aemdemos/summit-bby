@@ -129,7 +129,8 @@ function buildMegamenuPanel(megamenuDiv) {
       tabContent.className = `megamenu-tab-content${firstContentTab ? ' active' : ''}`;
       tabContent.setAttribute('data-tab-content', tabId);
 
-      const heading = document.createElement('h3');
+      const heading = document.createElement('div');
+      heading.className = 'megamenu-tab-heading';
       heading.textContent = currentH3;
       tabContent.appendChild(heading);
 
@@ -251,7 +252,8 @@ function buildToolItem(toolLi, container, getNav) {
     searchContent.className = 'search-content';
     [...subUl.querySelectorAll(':scope > li')].forEach((groupLi) => {
       const groupDiv = document.createElement('div');
-      const heading = document.createElement('h4');
+      const heading = document.createElement('div');
+      heading.className = 'search-group-heading';
       heading.textContent = getLiText(groupLi);
       groupDiv.appendChild(heading);
       const innerUl = groupLi.querySelector(':scope > ul');

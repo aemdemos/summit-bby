@@ -234,7 +234,7 @@ header .megamenu-panel {
   top: 100%;
   left: 0;
   width: 100vw;
-  max-width: 1440px;
+  max-width: 1920px;
   max-height: calc(100vh - 128px);
   background: #fff;
   box-shadow: 0 4px 16px rgb(0 0 0 / 15%);
@@ -425,7 +425,7 @@ header .megamenu-tab-content.active {
   display: block;
 }
 
-header .megamenu-tab-content h3 {
+header .megamenu-tab-heading {
   margin: 0 0 16px;
   padding-bottom: 12px;
   font-size: 32px;
@@ -597,7 +597,7 @@ header .search-content {
   margin: 0 auto;
 }
 
-header .search-content h4 {
+header .search-group-heading {
   margin: 0 0 16px;
   font-size: 14px;
   font-weight: 700;
