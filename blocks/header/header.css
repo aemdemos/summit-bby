@@ -235,7 +235,6 @@ header .megamenu-panel {
   box-shadow: 0 4px 16px rgb(0 0 0 / 15%);
   z-index: 200;
   margin-left: calc(-50vw + 50%);
-  overflow: hidden;
 }
 
 header .nav-row-primary .megamenu-panel {
@@ -318,7 +317,6 @@ header .megamenu-bottom-bar {
   padding: 16px 40px;
   border-top: 1px solid #e0e0e0;
   background: #fff;
-  margin-top: 16px;
 }
 
 header .megamenu-bottom-bar a {
