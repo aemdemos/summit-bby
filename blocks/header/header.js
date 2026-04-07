@@ -63,10 +63,12 @@ function buildTileGrid(items) {
     tile.href = a.href;
     tile.className = 'megamenu-tile';
     const img = a.querySelector('img');
-    if (img) tile.appendChild(img.cloneNode(true));
+    const picture = a.querySelector('picture');
+    if (picture) tile.appendChild(picture.cloneNode(true));
+    else if (img) tile.appendChild(img.cloneNode(true));
     const label = document.createElement('span');
     label.className = 'tile-label';
-    label.textContent = a.textContent.trim();
+    label.textContent = a.textContent.trim() || (img && img.alt) || '';
     tile.appendChild(label);
     const arrow = document.createElement('span');
     arrow.className = 'tile-arrow';
@@ -374,8 +376,12 @@ function buildSecondaryRow(sections) {
   const right = document.createElement('div');
   right.className = 'nav-row-right';
 
-  // Sections 3 to second-to-last: secondary megamenu items (skip division-links section)
-  const lastMegamenuIdx = sections.length - 1;
+  // Sections 3+: secondary megamenu items (skip division-links section if present)
+  const divLinksIdx = sections.findIndex((s) => {
+    const h = s.querySelector(':scope > h2');
+    return h && h.textContent.trim().toLowerCase().includes('division');
+  });
+  const lastMegamenuIdx = divLinksIdx > 0 ? divLinksIdx : sections.length;
   for (let i = 3; i < lastMegamenuIdx; i += 1) {
     const megamenuDiv = sections[i];
     const h2 = megamenuDiv.querySelector(':scope > h2');
@@ -470,8 +476,12 @@ function buildMobileChildren(megamenuDiv) {
 function buildMobileMenuData(sections) {
   const items = [];
 
-  // Secondary megamenus (sections 3 to second-to-last, skip division-links)
-  const lastIdx = sections.length - 1;
+  // Secondary megamenus (sections 3+, skip division-links section if present)
+  const divIdx = sections.findIndex((s) => {
+    const h = s.querySelector(':scope > h2');
+    return h && h.textContent.trim().toLowerCase().includes('division');
+  });
+  const lastIdx = divIdx > 0 ? divIdx : sections.length;
   for (let i = 3; i < lastIdx; i += 1) {
     const megamenuDiv = sections[i];
     const h2 = megamenuDiv.querySelector(':scope > h2');
