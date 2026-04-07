@@ -1,5 +1,10 @@
 /* S&P Global Header - Two Row Layout */
 
+/* Override global link hover color */
+header a:hover {
+  color: inherit;
+}
+
 /* ===== Nav Wrapper ===== */
 header .nav-wrapper {
   position: fixed;
@@ -19,7 +24,6 @@ header .nav-wrapper.scrolled {
 
 header nav {
   margin: 0 auto;
-  max-width: 1440px;
 }
 
 /* ===== Row Layout ===== */
@@ -230,6 +234,7 @@ header .megamenu-panel {
   top: 100%;
   left: 0;
   width: 100vw;
+  max-width: 1440px;
   max-height: calc(100vh - 128px);
   background: #fff;
   box-shadow: 0 4px 16px rgb(0 0 0 / 15%);
@@ -306,6 +311,7 @@ header .megamenu-content {
   grid-row: 1 / 2;
   grid-column: 2 / 3;
   padding: 24px 40px;
+  max-width: 1000px;
   overflow-y: auto;
 }
 
@@ -338,6 +344,7 @@ header .megamenu-bottom-bar a:last-child {
 
 header .megamenu-bottom-bar a:hover {
   text-decoration: underline;
+  color: #333;
 }
 
 /* ===== Megamenu Tabs (sidebar) ===== */
@@ -539,6 +546,7 @@ header .megamenu-links a::after {
 
 header .megamenu-links a:hover {
   background-color: #e8e8e8;
+  color: #000;
 }
 
 /* ===== Search Panel ===== */
