@@ -260,9 +260,9 @@ header .nav-row-secondary .megamenu-panel {
 
 header .megamenu-panel.open {
   display: grid;
-  grid-template-columns: minmax(250px, 300px) 1fr;
+  grid-template-columns: 390px 1fr;
   grid-template-rows: 1fr auto;
-  height: 580px;
+  height: 640px;
 }
 
 header .megamenu-close {
