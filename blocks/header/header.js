@@ -46,13 +46,37 @@ function togglePanel(nav, trigger, panel) {
 
 /**
  * Build a megamenu panel from a nav <div> section.
- * Structure: <div><h2>Title</h2> <h3>Tab</h3><ul>items</ul> ... <p>bottom bar</p></div>
+ * Structure: <div><h2>Title</h2> <h3>Tab</h3><ul>items</ul> ... </div>
  * Sequential parsing:
  *   - <h3> starts a content tab; the next <ul> supplies its items
  *   - <p> with 1 <a> = link-only sidebar tab
- *   - <p> with 2+ <a> = bottom bar
- * Content items with <img> render as image tiles; without as text links.
+ * Content items with <img> render as image tiles; without as card links.
+ * Bottom bar (division links) is added separately from a dedicated nav section.
  */
+function buildTileGrid(items) {
+  const tiles = document.createElement('div');
+  tiles.className = 'megamenu-tiles';
+  items.forEach((li) => {
+    const a = li.querySelector('a');
+    if (!a) return;
+    const tile = document.createElement('a');
+    tile.href = a.href;
+    tile.className = 'megamenu-tile';
+    const img = a.querySelector('img');
+    if (img) tile.appendChild(img.cloneNode(true));
+    const label = document.createElement('span');
+    label.className = 'tile-label';
+    label.textContent = a.textContent.trim();
+    tile.appendChild(label);
+    const arrow = document.createElement('span');
+    arrow.className = 'tile-arrow';
+    tile.appendChild(arrow);
+    tiles.appendChild(tile);
+  });
+  if (items.length > 6) tiles.classList.add('cols-4');
+  return tiles;
+}
+
 function buildMegamenuPanel(megamenuDiv) {
   const panel = document.createElement('div');
   panel.className = 'megamenu-panel';
@@ -92,7 +116,11 @@ function buildMegamenuPanel(megamenuDiv) {
       const tab = document.createElement('li');
       tab.className = `megamenu-tab${firstContentTab ? ' active' : ''}`;
       tab.setAttribute('data-tab', tabId);
-      tab.textContent = currentH3;
+      const tabLabel = document.createElement('span');
+      tabLabel.textContent = currentH3;
+      const tabChevron = document.createElement('span');
+      tabChevron.className = 'tab-chevron';
+      tab.append(tabLabel, tabChevron);
       tabList.appendChild(tab);
 
       const tabContent = document.createElement('div');
@@ -107,13 +135,7 @@ function buildMegamenuPanel(megamenuDiv) {
       const hasImages = items.some((li) => li.querySelector('img'));
 
       if (hasImages) {
-        const tiles = document.createElement('div');
-        tiles.className = 'megamenu-tiles';
-        items.forEach((li) => {
-          const a = li.querySelector('a');
-          if (a) tiles.appendChild(a.cloneNode(true));
-        });
-        tabContent.appendChild(tiles);
+        tabContent.appendChild(buildTileGrid(items));
       } else {
         const linkList = document.createElement('ul');
         linkList.className = 'megamenu-links';
@@ -134,7 +156,7 @@ function buildMegamenuPanel(megamenuDiv) {
       return;
     }
 
-    // <p> — either a link-only tab (1 link) or bottom bar (2+ links)
+    // <p> with 1 link — link-only sidebar tab
     if (tag === 'p') {
       const links = [...child.querySelectorAll('a')];
       if (links.length === 1) {
@@ -149,7 +171,6 @@ function buildMegamenuPanel(megamenuDiv) {
         tab.appendChild(a);
         tabList.appendChild(tab);
       }
-      // Bottom bar (2+ links) handled after the loop
     }
   });
 
@@ -173,20 +194,17 @@ function buildMegamenuPanel(megamenuDiv) {
   panel.appendChild(sidebar);
   panel.appendChild(content);
 
-  // Bottom bar: <p> with 2+ links
-  elems.forEach((child) => {
-    if (child.tagName.toLowerCase() === 'p') {
-      const links = [...child.querySelectorAll('a')];
-      if (links.length >= 2) {
-        const bottomBar = document.createElement('div');
-        bottomBar.className = 'megamenu-bottom-bar';
-        links.forEach((a) => {
-          bottomBar.appendChild(a.cloneNode(true));
-        });
-        panel.appendChild(bottomBar);
-      }
-    }
+  // Close button
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'megamenu-close';
+  closeBtn.type = 'button';
+  closeBtn.setAttribute('aria-label', 'Close menu');
+  closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const nav = panel.closest('nav');
+    if (nav) closeAllPanels(nav);
   });
+  panel.appendChild(closeBtn);
 
   return panel;
 }
@@ -356,8 +374,9 @@ function buildSecondaryRow(sections) {
   const right = document.createElement('div');
   right.className = 'nav-row-right';
 
-  // Sections 3+: secondary megamenu items (Find Products, Research & Insights, …)
-  for (let i = 3; i < sections.length; i += 1) {
+  // Sections 3 to second-to-last: secondary megamenu items (skip division-links section)
+  const lastMegamenuIdx = sections.length - 1;
+  for (let i = 3; i < lastMegamenuIdx; i += 1) {
     const megamenuDiv = sections[i];
     const h2 = megamenuDiv.querySelector(':scope > h2');
     const triggerText = h2 ? h2.textContent.trim() : '';
@@ -451,8 +470,9 @@ function buildMobileChildren(megamenuDiv) {
 function buildMobileMenuData(sections) {
   const items = [];
 
-  // Secondary megamenus (sections 3+): Find Products, Research & Insights, Who We Are
-  for (let i = 3; i < sections.length; i += 1) {
+  // Secondary megamenus (sections 3 to second-to-last, skip division-links)
+  const lastIdx = sections.length - 1;
+  for (let i = 3; i < lastIdx; i += 1) {
     const megamenuDiv = sections[i];
     const h2 = megamenuDiv.querySelector(':scope > h2');
     const label = h2 ? h2.textContent.trim() : '';
@@ -658,7 +678,7 @@ export default async function decorate(block) {
   const parser = new DOMParser();
   const navDoc = parser.parseFromString(html, 'text/html');
 
-  // Nav: 6 top-level divs (brand, tools, explore, find-products, research, who-we-are)
+  // Nav: 7 top-level divs (brand, tools, explore, find-products, research, who-we-are, division-links)
   const sections = [...navDoc.body.querySelectorAll(':scope > div')];
 
   block.textContent = '';
@@ -681,6 +701,18 @@ export default async function decorate(block) {
   nav.appendChild(secondaryRow);
   nav.appendChild(mobileMenu.element);
   nav.appendChild(overlay);
+
+  // Append shared bottom bar (from division-links section) to every megamenu panel
+  const divisionSection = sections[6];
+  if (divisionSection) {
+    const divLinks = [...divisionSection.querySelectorAll('a')];
+    nav.querySelectorAll('.megamenu-panel').forEach((panel) => {
+      const bottomBar = document.createElement('div');
+      bottomBar.className = 'megamenu-bottom-bar';
+      divLinks.forEach((a) => bottomBar.appendChild(a.cloneNode(true)));
+      panel.appendChild(bottomBar);
+    });
+  }
 
   function closeMobileMenu() {
     mobileMenu.close();
