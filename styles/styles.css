@@ -80,9 +80,6 @@
     --nav-height: 128px;
   }
 
-  body {
-    padding-top: 128px;
-  }
 }
 
 body {
@@ -100,6 +97,12 @@ body {
 
 body.appear {
   display: block;
+}
+
+@media (width >= 900px) {
+  body {
+    padding-top: 128px;
+  }
 }
 
 header {
