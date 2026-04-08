@@ -79,11 +79,16 @@
     /* nav height (desktop: two rows) */
     --nav-height: 128px;
   }
+
+  body {
+    padding-top: 128px;
+  }
 }
 
 body {
   display: none;
   margin: 0;
+  padding-top: 68px;
   background-color: var(--background-color);
   color: var(--text-color);
   font-family: var(--body-font-family);
