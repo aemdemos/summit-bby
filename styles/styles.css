@@ -306,8 +306,6 @@ p.button-wrapper {
   margin: 0 8px 0 0;
 }
 
-/* main img dimensions are set earlier for CLS prevention */
-
 .icon {
   display: inline-block;
   height: 24px;
