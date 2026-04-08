@@ -12,44 +12,7 @@
    ============================================================ */
 
 @media (width >= 900px) {
-  /* --- Base: 3 equal columns --- */
-  main > .section.three-columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 32px;
-    max-width: var(--max-width-site);
-    margin: 40px auto;
-    padding: 0 32px;
-  }
-
-  main > .section.three-columns > div {
-    max-width: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  /* --- Featured variant: sidebar-main-sidebar (1fr 2fr 1fr) --- */
-  main > .section.three-columns.featured {
-    grid-template-columns: 1fr 2fr 1fr;
-  }
-
-  /* Reorder: 1st child → center, 2nd → left, 3rd → right */
-  main > .section.three-columns.featured > div:nth-child(1) {
-    order: 2;
-  }
-
-  main > .section.three-columns.featured > div:nth-child(2) {
-    order: 1;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    padding: 0;
-    align-self: start;
-  }
-
-  main > .section.three-columns.featured > div:nth-child(3) {
-    order: 3;
-    align-self: start;
-  }
+  /* Base three-columns and featured variant moved to styles.css for CLS prevention */
 
   /* --- Reports variant: text-left, card-center, list-right (1fr 2fr 1fr) ---
      Natural DOM order, no reordering. Border on right column.

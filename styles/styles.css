@@ -79,11 +79,13 @@
     /* nav height (desktop: two rows) */
     --nav-height: 128px;
   }
+
 }
 
 body {
   display: none;
   margin: 0;
+  padding-top: 0;
   background-color: var(--background-color);
   color: var(--text-color);
   font-family: var(--body-font-family);
@@ -97,8 +99,13 @@ body.appear {
   display: block;
 }
 
+main {
+  min-height: calc(100vh - var(--header-height));
+}
+
 header {
   height: var(--header-height);
+  overflow: hidden;
 }
 
 header .header,
@@ -184,6 +191,12 @@ a {
 a:hover {
   color: var(--link-hover-color);
   text-decoration: underline;
+}
+
+main img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
 }
 
 /* buttons — shared base
@@ -293,12 +306,6 @@ p.button-wrapper {
   margin: 0 8px 0 0;
 }
 
-main img {
-  max-width: 100%;
-  width: auto;
-  height: auto;
-}
-
 .icon {
   display: inline-block;
   height: 24px;
@@ -321,13 +328,58 @@ main > .section > div {
   padding: 0 16px;
 }
 
-main > .section:first-of-type {
+main > .section:first-of-type,
+main > .section.three-columns:first-of-type,
+main > .section.market-ticker + .section {
   margin-top: 0;
 }
 
 @media (width >= 900px) {
   main > .section > div {
     padding: 0 32px;
+  }
+}
+
+/* three-columns layout — in styles.css (not lazy) to prevent CLS */
+@media (width >= 900px) {
+  main > .section.three-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+    max-width: var(--max-width-site);
+    margin: 40px auto;
+    padding: 0 32px;
+  }
+
+  main > .section.three-columns:first-of-type {
+    margin-top: 0;
+  }
+
+  main > .section.three-columns > div {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  main > .section.three-columns.featured {
+    grid-template-columns: 1fr 2fr 1fr;
+  }
+
+  main > .section.three-columns.featured > div:nth-child(1) {
+    order: 2;
+  }
+
+  main > .section.three-columns.featured > div:nth-child(2) {
+    order: 1;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0;
+    align-self: start;
+  }
+
+  main > .section.three-columns.featured > div:nth-child(3) {
+    order: 3;
+    align-self: start;
   }
 }
 
@@ -338,6 +390,25 @@ main .section.highlight {
   background-color: var(--light-color);
   margin: 0;
   padding: 40px 0;
+}
+
+/* Market ticker — static image strip matching content width */
+main .section.market-ticker {
+  margin: 0;
+  padding: 16px 0;
+  background-color: #fff;
+}
+
+main .section.market-ticker > div {
+  max-width: var(--max-width-site);
+  padding: 0 32px;
+  margin: 0 auto;
+}
+
+main .section.market-ticker img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 main .section.dark {
