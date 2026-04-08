@@ -392,17 +392,17 @@ main .section.highlight {
   padding: 40px 0;
 }
 
-/* Market ticker — full-width static image strip */
+/* Market ticker — static image strip matching content width */
 main .section.market-ticker {
   margin: 0;
-  padding: 32px 0 24px;
+  padding: 16px 0;
   background-color: #fff;
 }
 
 main .section.market-ticker > div {
-  max-width: none;
-  padding: 0;
-  margin: 0;
+  max-width: var(--max-width-site);
+  padding: 0 32px;
+  margin: 0 auto;
 }
 
 main .section.market-ticker img {
