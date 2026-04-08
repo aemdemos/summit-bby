@@ -9,9 +9,11 @@ header a:hover {
 header .nav-wrapper {
   position: fixed;
   top: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 100;
   width: 100%;
+  max-width: 1920px;
   background-color: #fff;
   font-family: var(--body-font-family);
   transition: box-shadow 0.2s ease;
