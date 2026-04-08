@@ -85,7 +85,7 @@
 body {
   display: none;
   margin: 0;
-  padding-top: 68px;
+  padding-top: 0;
   background-color: var(--background-color);
   color: var(--text-color);
   font-family: var(--body-font-family);
@@ -97,12 +97,6 @@ body {
 
 body.appear {
   display: block;
-}
-
-@media (width >= 900px) {
-  body {
-    padding-top: 128px;
-  }
 }
 
 header {
