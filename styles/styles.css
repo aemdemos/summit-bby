@@ -101,6 +101,7 @@ body.appear {
 
 header {
   height: var(--header-height);
+  overflow: hidden;
 }
 
 header .header,

@@ -16,7 +16,7 @@
   font-family: akkuratpro;
   font-style: normal;
   font-weight: 400;
-  font-display: swap;
+  font-display: optional;
   src: url('../fonts/AkkuratPro-Regular.woff2') format('woff2');
 }
 
@@ -25,7 +25,7 @@
   font-family: akkuratpro;
   font-style: normal;
   font-weight: 700;
-  font-display: swap;
+  font-display: optional;
   src: url('../fonts/AkkuratPro-Bold.woff2') format('woff2');
 }
 
@@ -34,7 +34,7 @@
   font-family: akkuratpro;
   font-style: normal;
   font-weight: 300;
-  font-display: swap;
+  font-display: optional;
   src: url('../fonts/AkkuratPro-Light.woff2') format('woff2');
 }
 
@@ -43,5 +43,7 @@
   font-family: akkurat-pro-fallback;
   size-adjust: 97%;
   ascent-override: 95%;
+  descent-override: 22%;
+  line-gap-override: 0%;
   src: local('Arial');
 }
