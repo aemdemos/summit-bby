@@ -148,7 +148,7 @@
   margin: 0;
 }
 
-.card-carousel.product .cards-card-body h4 {
+.card-carousel.product .cards-card-body h3 {
   margin: 0 0 16px;
   font-size: 22px;
   letter-spacing: -0.44px;
@@ -196,7 +196,7 @@
 }
 
 /* hover: underline title */
-.card-carousel.product .card-carousel-slide:hover h4 {
+.card-carousel.product .card-carousel-slide:hover h3 {
   text-decoration: underline;
 }
 
@@ -308,7 +308,7 @@
 }
 
 /* Title */
-.card-carousel.podcast .cards-card-body h4 {
+.card-carousel.podcast .cards-card-body h3 {
   color: #fff;
   margin: 0 0 16px;
   font-size: 22px;
@@ -355,7 +355,7 @@
 }
 
 /* Hover: underline title */
-.card-carousel.podcast .card-carousel-slide:hover h4 {
+.card-carousel.podcast .card-carousel-slide:hover h3 {
   text-decoration: underline;
 }
 
