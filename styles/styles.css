@@ -193,13 +193,10 @@ a:hover {
   text-decoration: underline;
 }
 
-/* images — prevent CLS by reserving space before block CSS loads */
 main img {
   max-width: 100%;
-  width: 100%;
+  width: auto;
   height: auto;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
 }
 
 /* buttons — shared base
@@ -341,6 +338,49 @@ main > .section.three-columns:first-of-type {
 @media (width >= 900px) {
   main > .section > div {
     padding: 0 32px;
+  }
+}
+
+/* three-columns layout — in styles.css (not lazy) to prevent CLS */
+@media (width >= 900px) {
+  main > .section.three-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+    max-width: var(--max-width-site);
+    margin: 40px auto;
+    padding: 0 32px;
+  }
+
+  main > .section.three-columns:first-of-type {
+    margin-top: 0;
+  }
+
+  main > .section.three-columns > div {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  main > .section.three-columns.featured {
+    grid-template-columns: 1fr 2fr 1fr;
+  }
+
+  main > .section.three-columns.featured > div:nth-child(1) {
+    order: 2;
+  }
+
+  main > .section.three-columns.featured > div:nth-child(2) {
+    order: 1;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0;
+    align-self: start;
+  }
+
+  main > .section.three-columns.featured > div:nth-child(3) {
+    order: 3;
+    align-self: start;
   }
 }
 
