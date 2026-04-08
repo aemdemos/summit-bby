@@ -260,7 +260,7 @@ header .nav-row-secondary .megamenu-panel {
 
 header .megamenu-panel.open {
   display: grid;
-  grid-template-columns: 33% 1fr;
+  grid-template-columns: 27% 1fr;
   grid-template-rows: 1fr auto;
   height: 640px;
 }
