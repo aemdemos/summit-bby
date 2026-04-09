@@ -141,6 +141,7 @@ header .nav-btn-section .chevron-down {
   transform: rotate(45deg);
   transition: transform 0.2s ease;
   margin-top: -3px;
+  margin-left: 8px;
 }
 
 header .nav-btn-section.nav-trigger-active .chevron-down {
